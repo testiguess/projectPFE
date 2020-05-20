@@ -6,59 +6,76 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
 public class ParRouteVariables {
-	public Long rId;
-	public String mode;
-	public Long[] eIds;
+	public Long resId;
+	public String modeUtil;
+	public Long[] equipIds;
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime debutTime;
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	public LocalDateTime finTime;
 	public String typePoid;
-	public Long getrId() {
-		return rId;
+
+	public Long getResId() {
+		return resId;
 	}
-	public void setrId(Long rId) {
-		this.rId = rId;
+
+	public void setResId(Long resId) {
+		this.resId = resId;
 	}
-	public String getMode() {
-		return mode;
+
+	public String getModeUtil() {
+		return modeUtil;
 	}
-	public void setMode(String mode) {
-		this.mode = mode;
+
+	public void setModeUtil(String modeUtil) {
+		this.modeUtil = modeUtil;
 	}
-	public Long[] geteIds() {
-		return eIds;
+
+	public Long[] getEquipIds() {
+		return equipIds;
 	}
-	public void seteIds(Long[] eIds) {
-		this.eIds = eIds;
+
+	public void setEquipIds(Long[] equipIds) {
+		this.equipIds = equipIds;
 	}
+
 	public LocalDateTime getDebutTime() {
 		return debutTime;
 	}
+
 	public void setDebutTime(LocalDateTime debutTime) {
 		this.debutTime = debutTime;
 	}
+
 	public LocalDateTime getFinTime() {
 		return finTime;
 	}
+
 	public void setFinTime(LocalDateTime finTime) {
 		this.finTime = finTime;
 	}
+
 	public String getTypePoid() {
 		return typePoid;
 	}
+
 	public void setTypePoid(String typePoid) {
 		this.typePoid = typePoid;
 	}
-	public ParRouteVariables(Long rId, String mode, Long[] eIds, LocalDateTime debutTime, LocalDateTime finTime,
-			String typePoid) {
+
+	public ParRouteVariables(Long resId, String modeUtil, Long[] equipIds, LocalDateTime debutTime,
+			LocalDateTime finTime, String typePoid) {
 		super();
-		this.rId = rId;
-		this.mode = mode;
-		this.eIds = eIds;
+		this.resId = resId;
+		this.modeUtil = modeUtil;
+		this.equipIds = equipIds;
 		this.debutTime = debutTime;
 		this.finTime = finTime;
 		this.typePoid = typePoid;
 	}
-	
+
+	public ParRouteVariables() {
+		super();
+	}
+
 }

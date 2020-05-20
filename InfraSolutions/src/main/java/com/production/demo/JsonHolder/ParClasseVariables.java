@@ -1,21 +1,17 @@
 package com.production.demo.JsonHolder;
 
+import java.time.LocalDateTime;
+
 public class ParClasseVariables extends RepeatingVariables {
-	public String classe;
+	public String[] classes;
 	public String sens;
 
-	public ParClasseVariables(String classe, String sens) {
-		super();
-		this.classe = classe;
-		this.sens = sens;
+	public String[] getClasses() {
+		return classes;
 	}
 
-	public String getClasse() {
-		return classe;
-	}
-
-	public void setClasse(String classe) {
-		this.classe = classe;
+	public void setClasses(String[] classes) {
+		this.classes = classes;
 	}
 
 	public String getSens() {
@@ -25,5 +21,18 @@ public class ParClasseVariables extends RepeatingVariables {
 	public void setSens(String sens) {
 		this.sens = sens;
 	}
+
+	public ParClasseVariables(Long resId, Long equipId, String modeUtil, LocalDateTime debutTime, LocalDateTime finTime,
+			String typePoid, int[] voie, String[] classes, String sens) {
+		super(resId, equipId, modeUtil, debutTime, finTime, typePoid, voie);
+		this.classes = classes;
+		this.sens = sens;
+	}
+
+	public ParClasseVariables() {
+		super();
+	}
+
+	
 
 }

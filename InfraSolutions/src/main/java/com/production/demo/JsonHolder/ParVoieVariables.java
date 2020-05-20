@@ -1,24 +1,26 @@
 package com.production.demo.JsonHolder;
 
+import java.time.LocalDateTime;
+
 public class ParVoieVariables extends RepeatingVariables {
-	public Long vId;
+	public Long[] vIds;
 
-	public Long getvId() {
-		return vId;
+	public ParVoieVariables(Long resId, Long equipId, String modeUtil, LocalDateTime debutTime, LocalDateTime finTime,
+			String typePoid, int[] voie, Long[] vIds) {
+		super(resId, equipId, modeUtil, debutTime, finTime, typePoid, voie);
+		this.vIds = vIds;
 	}
 
-	public void setvId(Long vId) {
-		this.vId = vId;
+	public Long[] getvIds() {
+		return vIds;
 	}
 
-	public ParVoieVariables(Long vId) {
-		super();
-		this.vId = vId;
+	public void setvIds(Long[] vIds) {
+		this.vIds = vIds;
 	}
 
 	public ParVoieVariables() {
 		super();
 	}
-	
 
 }
