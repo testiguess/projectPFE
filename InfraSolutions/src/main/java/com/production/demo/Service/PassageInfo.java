@@ -1,7 +1,9 @@
 package com.production.demo.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,7 +87,7 @@ public class PassageInfo {
 	}
 
 	// GrapheVolumeParVoie
-	public List<Object[]> grapheVolumeParVoie(Long rId, String mode, Long eId, Long vId, LocalDateTime debutTime,
+	public List<Object[]> grapheVolumeParVoie(Long rId, String mode, Long eId, int vId, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
 		List<Object[]> m = passageRepo.grapheVolumeParVoie(rId, mode, eId, vId, debutTime, finTime, typeP);
 		return m;
@@ -96,5 +98,23 @@ public class PassageInfo {
 			LocalDateTime finTime, String typeP) {
 		List<Object[]> m = passageRepo.grapheVolumeParSens(rId, mode, eId, sens, debutTime, finTime, typeP);
 		return m;
+	}
+
+	// Menu Véhicule Table
+	public List<VolumeParResponseObject> vehiculeTable(Long rId, String mode, Long eId, LocalDateTime debutTime,
+			LocalDateTime finTime, int speed1, int speed2, int long1, int long2) {
+		List<VolumeParResponseObject> m = passageRepo.vehiculeTable(rId, eId, mode, debutTime, finTime, speed1, speed2,
+				long1, long2);
+		return m;
+	}	
+	
+	//Menu Vehicule Graphe(PL/PT)
+	public Map<String,List<Object[]>> graphePlPt(Long rId, Long eId, String mode, LocalDateTime debutTime,
+			LocalDateTime finTime) {
+		Map<String,List<Object[]>> m = new HashMap<>();
+		m.put("Poids Lourd", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "VL"));
+		m.put("Poids Total", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "T"));
+		return m;
+		
 	}
 }

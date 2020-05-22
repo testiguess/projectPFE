@@ -12,7 +12,7 @@ public class VolumeParResponseObject {
 	private String classe;
 	private int vitesse;
 	private int headway;
-	private boolean overloaded;
+	private boolean surcharge;
 	private int voie;
 	private String sens;
 	public Long getId() {
@@ -64,10 +64,10 @@ public class VolumeParResponseObject {
 		this.headway = headway;
 	}
 	public boolean isOverloaded() {
-		return overloaded;
+		return surcharge;
 	}
 	public void setOverloaded(boolean overloaded) {
-		this.overloaded = overloaded;
+		this.surcharge = overloaded;
 	}
 	public int getVoie() {
 		return voie;
@@ -92,10 +92,25 @@ public class VolumeParResponseObject {
 		this.classe = classe;
 		this.vitesse = vitesse;
 		this.headway = headway;
-		this.overloaded = overloaded;
+		this.surcharge = overloaded;
 		this.voie = voie;
 		this.sens = sens;
 	}
+	public VolumeParResponseObject(int longueur, int nombreEssieu, LocalDate date, LocalTime time, String classe,
+			int vitesse, int headway, boolean overloaded, int voie, String sens) {
+		super();
+		this.longueur = longueur;
+		this.nombreEssieu = nombreEssieu;
+		this.date = date;
+		this.time = time;
+		this.classe = classe;
+		this.vitesse = vitesse;
+		this.headway = headway;
+		this.surcharge = overloaded;
+		this.voie = voie;
+		this.sens = sens;
+	}
+	
 
 	
 

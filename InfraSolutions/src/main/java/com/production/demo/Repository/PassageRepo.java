@@ -116,7 +116,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
 
 	// VolumeParClasse
-	@Query("SELECT p.date, count(p) as nombreDeVehicule "
+	@Query("SELECT p.timestamp, count(p) as nombreDeVehicule "
 
 			+ "FROM Passage p "
 
@@ -124,7 +124,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.typePoid is not :typePoid "
-			+ "AND p.classe=:classe " + "AND v.sens=:sens " + "GROUP BY p.date ")
+			+ "AND p.classe=:classe " + "AND v.sens=:sens " + "GROUP BY p.timestamp ")
 	public List<Object[]> grapheVolumeParClasse(@Param("rId") Long rId, @Param("id") Long eid,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("classe") String classe,
@@ -147,7 +147,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("sens") String sens);
 
 	// VolumeParRoute
-	@Query("SELECT p.date , count(p) as nombreDeVehicule "
+	@Query("SELECT p.timestamp , count(p) as nombreDeVehicule "
 
 			+ "FROM Passage p "
 
@@ -156,28 +156,28 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "WHERE r.id=:rId AND e.mode=:mode " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
 			+ "AND p.typePoid is not :typePoid AND e.id=:eId "
 
-			+ "GROUP BY p.date")
+			+ "GROUP BY p.timestamp")
 	public List<Object[]> grapheVolumeParRoute(@Param("rId") Long rId, @Param("mode") String mode,
 			@Param("eId") Long eId, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
 
 	// VolumeParVoie
-	@Query("SELECT p.date , count(p) as nombreDeVehicule "
+	@Query("SELECT p.timestamp , count(p) as nombreDeVehicule "
 
 			+ "FROM Passage p "
 
 			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
 
 			+ "WHERE r.id=:rId AND e.mode=:mode AND e.id=:eId " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
-			+ "AND p.typePoid is not :typePoid AND v.id=:vId "
+			+ "AND p.typePoid is not :typePoid AND v.numero=:vNum "
 
-			+ "GROUP BY p.date")
+			+ "GROUP BY p.timestamp")
 	public List<Object[]> grapheVolumeParVoie(@Param("rId") Long rId, @Param("mode") String mode,
-			@Param("eId") Long eIds, @Param("vId") Long vId, @Param("timestamp1") LocalDateTime times1,
+			@Param("eId") Long eIds, @Param("vNum") int vId, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
 
 	// VolumeParSens
-	@Query("SELECT p.date , count(p) as nombreDeVehicule "
+	@Query("SELECT p.timestamp , count(p) as nombreDeVehicule "
 
 			+ "FROM Passage p "
 
@@ -186,8 +186,47 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "WHERE r.id=:rId AND e.mode=:mode AND e.id=:eId " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
 			+ "AND p.typePoid is not :typePoid AND v.sens=:sens "
 
-			+ "GROUP BY p.date")
+			+ "GROUP BY p.timestamp")
 	public List<Object[]> grapheVolumeParSens(@Param("rId") Long rId, @Param("mode") String mode,
 			@Param("eId") Long eIds, @Param("sens") String sens, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
+
+
+	// ****** Menu Véhicule *******
+	//   Table
+	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseObject(ve.id, ve.longueur, ve.numEssieu as nombreEssieu,"
+			+ "p.date, p.time, p.classe, p.speed as vitesse, p.headway, p.overloaded as surcharge, " + "v.numero as voie, v.sens) "
+	
+			+ "FROM Passage p "
+	
+			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
+	
+			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
+			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.speed between :speed1 AND :speed2 "
+			+ "AND ve.longueur between :long1 AND :long2")
+	
+	public List<VolumeParResponseObject> vehiculeTable(@Param("rId") Long rId, @Param("id") Long eid,
+			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
+			@Param("timestamp2") LocalDateTime times2, @Param("speed1")int speed1, @Param("speed2")int speed2,
+			@Param("long1")int long1, @Param("long2")int long2);
+
+	// Graphe Poids Lourd/Poid Total
+	
+	@Query("SELECT HOUR(p.time) , count(p) as nombreDeVehicule "
+
+			+ "FROM Passage p "
+
+			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
+
+			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
+			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.typePoid is not :typePoid "
+
+			+ "GROUP BY HOUR(p.time) ")
+	public List<Object[]> graphePlPt(@Param("rId") Long rId, @Param("id") Long eid,
+			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
+			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
+	
+	
+	
+	
 }
