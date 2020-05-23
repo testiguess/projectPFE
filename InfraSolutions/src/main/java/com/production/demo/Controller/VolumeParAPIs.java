@@ -139,8 +139,8 @@ public class VolumeParAPIs {
 
 	@PostMapping("/grapheVolumeParVitesse")
 	public ResponseEntity<Object> grapheVolumeParVitesse(@Valid @RequestBody ParVitesseVariables pVv) {
-		Map<Integer,Integer> m = passageInfo.grapheVolumeParVitesse(pVv.resId, pVv.equipId, pVv.modeUtil, pVv.debutTime,
-				pVv.finTime, pVv.typePoid, pVv.sens);
+		Map<Integer, Integer> m = passageInfo.grapheVolumeParVitesse(pVv.resId, pVv.equipId, pVv.modeUtil,
+				pVv.debutTime, pVv.finTime, pVv.typePoid, pVv.sens);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);

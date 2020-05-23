@@ -19,7 +19,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 	// VolumeParPeiode Table
 	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseObject( ve.id, ve.longueur, ve.numEssieu as nombreEssieu,"
-			+ "p.date, p.time, p.classe, p.speed as vitesse, p.headway, p.overloaded, " + "v.numero as voie, v.sens) "
+			+ "p.date, p.time, p.classe, p.speed as vitesse, p.headway, p.overloaded as surcharge, " + "v.numero as voie, v.sens) "
 
 			+ "FROM Passage p "
 
@@ -33,7 +33,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 	// VolumeParClasse Table
 	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseObject( ve.id, ve.longueur, ve.numEssieu as nombreEssieu,"
-			+ "p.date, p.time, p.classe, p.speed as vitesse, p.headway, p.overloaded, " + "v.numero as voie, v.sens) "
+			+ "p.date, p.time, p.classe, p.speed as vitesse, p.headway, p.overloaded as surcharge, " + "v.numero as voie, v.sens) "
 
 			+ "FROM Passage p "
 

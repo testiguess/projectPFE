@@ -19,6 +19,8 @@ public class PassageInfo {
 	@Autowired
 	private PassageRepo passageRepo;
 
+	
+
 	// VolumeParPeriode
 	public List<VolumeParResponseObject> volumeParPeriode(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
@@ -77,13 +79,29 @@ public class PassageInfo {
 	public Map<Integer, Integer> grapheVolumeParVitesse(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP, String sens) {
 		List<Object[]> m = new ArrayList<>();
-		m=passageRepo.grapheVolumeParVitesse(rId, eId, mode, debutTime, finTime, typeP, sens);
-		Map<Integer,Integer> v = new HashMap<>();
-		v.put(10, 0);v.put(20, 0);v.put(30, 0);v.put(40, 0);v.put(50, 0);v.put(60, 0);v.put(70, 0);v.put(80, 0);
-		v.put(90, 0);v.put(100, 0);v.put(110, 0);v.put(120, 0);v.put(130, 0);v.put(140, 0);v.put(150, 0);
-		v.put(160, 0);v.put(170, 0);v.put(180, 0);
-		for(int i=0;i<m.size();i++) {
-			v.put(((int) m.get(i)[0]/10)*10,v.get(((int) m.get(i)[0]/10)*10) +  ((Long) m.get(i)[1]).intValue());
+		m = passageRepo.grapheVolumeParVitesse(rId, eId, mode, debutTime, finTime, typeP, sens);
+		Map<Integer, Integer> v = new HashMap<>();
+		v.put(10, 0);
+		v.put(20, 0);
+		v.put(30, 0);
+		v.put(40, 0);
+		v.put(50, 0);
+		v.put(60, 0);
+		v.put(70, 0);
+		v.put(80, 0);
+		v.put(90, 0);
+		v.put(100, 0);
+		v.put(110, 0);
+		v.put(120, 0);
+		v.put(130, 0);
+		v.put(140, 0);
+		v.put(150, 0);
+		v.put(160, 0);
+		v.put(170, 0);
+		v.put(180, 0);
+		for (int i = 0; i < m.size(); i++) {
+			v.put(((int) m.get(i)[0] / 10) * 10,
+					v.get(((int) m.get(i)[0] / 10) * 10) + ((Long) m.get(i)[1]).intValue());
 		}
 		return v;
 	}
@@ -115,15 +133,15 @@ public class PassageInfo {
 		List<VolumeParResponseObject> m = passageRepo.vehiculeTable(rId, eId, mode, debutTime, finTime, speed1, speed2,
 				long1, long2);
 		return m;
-	}	
-	
-	//Menu Vehicule Graphe(PL/PT)
-	public Map<String,List<Object[]>> graphePlPt(Long rId, Long eId, String mode, LocalDateTime debutTime,
+	}
+
+	// Menu Vehicule Graphe(PL/PT)
+	public Map<String, List<Object[]>> graphePlPt(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime) {
-		Map<String,List<Object[]>> m = new HashMap<>();
+		Map<String, List<Object[]>> m = new HashMap<>();
 		m.put("Poids Lourd", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "VL"));
 		m.put("Poids Total", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "T"));
 		return m;
-		
+
 	}
 }

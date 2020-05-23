@@ -44,7 +44,7 @@ public class Passage {
 	@Column(nullable = false)
 	private int headway;
 
-	private boolean overloaded;
+	private String overloaded;
 
 	@Column(nullable = false)
 	private int gap;
@@ -151,11 +151,11 @@ public class Passage {
 		this.typePoid = typePoid;
 	}
 
-	public boolean isOverloaded() {
+	public String getOverloaded() {
 		return overloaded;
 	}
 
-	public void setOverloaded(boolean overloaded) {
+	public void setOverloaded(String overloaded) {
 		this.overloaded = overloaded;
 	}
 
@@ -248,7 +248,7 @@ public class Passage {
 		a.setPassage(null);
 	}
 
-	public Passage(LocalDate date, LocalTime time, @Size(max = 50) String classe, int headway, boolean overloaded,
+	public Passage(LocalDate date, LocalTime time, @Size(max = 50) String classe, int headway, String overloaded,
 			int gap, int gross, @NotBlank String typePoid, int speed) {
 		super();
 		this.date = date;
