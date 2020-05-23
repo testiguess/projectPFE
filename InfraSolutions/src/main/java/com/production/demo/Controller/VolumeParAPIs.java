@@ -9,6 +9,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,7 @@ import com.production.demo.JsonHolder.ParVoieVariables;
 import com.production.demo.JsonHolder.RepeatingVariables;
 import com.production.demo.JsonHolder.VolumeParResponseObject;
 import com.production.demo.JsonHolder.VolumeParResponseParRoute;
+import com.production.demo.Repository.Equipement;
 import com.production.demo.Service.PassageInfo;
 
 @RestController
@@ -30,6 +33,9 @@ public class VolumeParAPIs {
 
 	@Autowired
 	private PassageInfo passageInfo;
+	
+	@Autowired
+	private Equipement equipRepo;
 
 	@PostMapping("/volumeParPeriode")
 	public ResponseEntity<Object> volumeParPeriode(@Valid @RequestBody RepeatingVariables pr) {
@@ -205,7 +211,7 @@ public class VolumeParAPIs {
 
 	@PostMapping("/graphePlPt")
 	public ResponseEntity<Object> graphePlPt(@Valid @RequestBody RepeatingVariables pr) {
-		Map<String,List<Object[]>> m = passageInfo.graphePlPt(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
+		Map<String, List<Object[]>> m = passageInfo.graphePlPt(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
 				pr.finTime);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
@@ -216,4 +222,8 @@ public class VolumeParAPIs {
 
 	}
 
+	@GetMapping("/{id}/Equipements")
+	public List<Long> allEquip(@Valid @PathVariable("id") Long i) {
+		return equipRepo.equipParRes(i);
+	}
 }
