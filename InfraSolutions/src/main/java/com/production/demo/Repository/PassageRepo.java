@@ -77,7 +77,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
 
 			+ "WHERE r.id=:rId " + "AND e.mode=:mode "+" AND e.id=:eId " + " AND p.timestamp between :timestamp1 AND :timestamp2 "
-			+ "AND p.typePoid is not :typePoid AND v.numero=:voies")
+			+ "AND p.typePoid is not :typePoid AND v.numero IN :voies")
 	public List<VolumeParResponseParRoute> findVolumeParVoie(@Param("rId") Long rId, @Param("eId")Long eId,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP,@Param("voies")int[] voies);
@@ -93,10 +93,10 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
 
 			+ "WHERE r.id=:rId " + "AND e.mode=:mode "+" AND e.id=:eId " + " AND p.timestamp between :timestamp1 AND :timestamp2 "
-			+ "AND p.typePoid is not :typePoid AND v.sens=:sens")
+			+ "AND p.typePoid is not :typePoid AND v.sens IN :sens")
 	public List<VolumeParResponseParRoute> findVolumeParSens(@Param("rId") Long rId, @Param("eId")Long eId,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP,@Param("sens")String sens);
+			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP,@Param("sens")String[] sens);
 	
 	
 	// ******** Resultat sous forme Graphique ********

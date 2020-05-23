@@ -26,6 +26,7 @@ import com.production.demo.JsonHolder.RepeatingVariables;
 import com.production.demo.JsonHolder.VolumeParResponseObject;
 import com.production.demo.JsonHolder.VolumeParResponseParRoute;
 import com.production.demo.Repository.Equipement;
+import com.production.demo.Repository.ReseauRepo;
 import com.production.demo.Service.PassageInfo;
 
 @RestController
@@ -33,9 +34,12 @@ public class VolumeParAPIs {
 
 	@Autowired
 	private PassageInfo passageInfo;
-	
+
 	@Autowired
 	private Equipement equipRepo;
+
+	@Autowired
+	private ReseauRepo resRepo;
 
 	@PostMapping("/volumeParPeriode")
 	public ResponseEntity<Object> volumeParPeriode(@Valid @RequestBody RepeatingVariables pr) {
@@ -78,9 +82,9 @@ public class VolumeParAPIs {
 	}
 
 	@PostMapping("/volumeParVoie")
-	public ResponseEntity<Object> volumeParVoie(@Valid @RequestBody RepeatingVariables pr) {
+	public ResponseEntity<Object> volumeParVoie(@Valid @RequestBody ParVoieVariables pr) {
 		List<VolumeParResponseParRoute> m = passageInfo.volumeParVoie(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
-				pr.finTime, pr.typePoid, pr.voie);
+				pr.finTime, pr.typePoid, pr.vNums);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
@@ -91,9 +95,9 @@ public class VolumeParAPIs {
 	}
 
 	@PostMapping("/volumeParSens")
-	public ResponseEntity<Object> volumeParSens(@Valid @RequestBody RepeatingVariables pr) {
+	public ResponseEntity<Object> volumeParSens(@Valid @RequestBody ParSensVariables pr) {
 		List<VolumeParResponseParRoute> m = passageInfo.volumeParSens(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
-				pr.finTime, pr.typePoid, pr.sens);
+				pr.finTime, pr.typePoid, pr.sense);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
@@ -135,7 +139,7 @@ public class VolumeParAPIs {
 
 	@PostMapping("/grapheVolumeParVitesse")
 	public ResponseEntity<Object> grapheVolumeParVitesse(@Valid @RequestBody ParVitesseVariables pVv) {
-		List<Object[]> m = passageInfo.grapheVolumeParVitesse(pVv.resId, pVv.equipId, pVv.modeUtil, pVv.debutTime,
+		Map<Integer,Integer> m = passageInfo.grapheVolumeParVitesse(pVv.resId, pVv.equipId, pVv.modeUtil, pVv.debutTime,
 				pVv.finTime, pVv.typePoid, pVv.sens);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
@@ -222,8 +226,13 @@ public class VolumeParAPIs {
 
 	}
 
-	@GetMapping("/{id}/Equipements")
+	@GetMapping("/{id}/equipements")
 	public List<Long> allEquip(@Valid @PathVariable("id") Long i) {
 		return equipRepo.equipParRes(i);
+	}
+
+	@GetMapping("/reseaux")
+	public List<Long> allReseau() {
+		return resRepo.allReseau();
 	}
 }

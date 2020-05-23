@@ -48,6 +48,14 @@ public class Equipement {
 	@ManyToOne(optional = false)
 	private Reseau reseau;
 
+	public List<Passage> getPassages() {
+		return passages;
+	}
+
+	public void setPassages(List<Passage> passages) {
+		this.passages = passages;
+	}
+
 	// OneToMany(Etat)
 	@OneToMany(mappedBy = "equip", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Etat> etats = new ArrayList<>();
