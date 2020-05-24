@@ -20,8 +20,6 @@ public class PassageInfo {
 	@Autowired
 	private PassageRepo passageRepo;
 
-	
-
 	// VolumeParPeriode
 	public List<VolumeParResponseObject> volumeParPeriode(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
@@ -31,7 +29,7 @@ public class PassageInfo {
 
 	// VolumeParClasse
 	public List<VolumeParResponseObject> volumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, String[] classes,int[] voies) {
+			LocalDateTime finTime, String typeP, String[] classes, int[] voies) {
 		List<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, typeP,
 				classes, voies);
 		return m;
@@ -138,12 +136,31 @@ public class PassageInfo {
 	}
 
 	// Menu Vehicule Graphe(PL/PT)
-	public Map<String, List<Object[]>> graphePlPt(Long rId, Long eId, String mode, LocalDateTime debutTime,
+	public Map<String, List<Integer>> graphePlPt(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime) {
+		// ResultSet From SQL Query
 		Map<String, List<Object[]>> m = new HashMap<>();
+		// Result {"key":[2,7,...]...}
+		Map<String, List<Integer>> list = new HashMap<>();
+
 		m.put("Poids Lourd", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "VL"));
 		m.put("Poids Total", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "T"));
-		return m;
+
+		
+		for (String key : m.keySet()) {
+			List<Integer> holder = new ArrayList<>();
+			for (int i = 0; i < 24; i++) {
+				holder.add(0);
+			}
+			List<Object[]> listHeure = m.get(key);
+			for (Object[] o : listHeure) {
+				holder.set((Integer) o[0], ((Long)o[1]).intValue());
+			}
+			list.put(key, holder);
+
+		}
+
+		return list;
 
 	}
 }

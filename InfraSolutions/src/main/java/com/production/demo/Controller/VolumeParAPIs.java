@@ -215,7 +215,7 @@ public class VolumeParAPIs {
 
 	@PostMapping("/graphePlPt")
 	public ResponseEntity<Object> graphePlPt(@Valid @RequestBody RepeatingVariables pr) {
-		Map<String, List<Object[]>> m = passageInfo.graphePlPt(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
+		Map<String, List<Integer>> m = passageInfo.graphePlPt(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
 				pr.finTime);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),

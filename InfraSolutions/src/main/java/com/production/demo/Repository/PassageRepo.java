@@ -124,7 +124,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.typePoid is not :typePoid "
-			+ "AND p.classe=:classe " + "AND v.sens IN :voie " + "GROUP BY p.timestamp ")
+			+ "AND p.classe=:classe " + "AND v.numero IN :voie " + "GROUP BY p.timestamp ")
 	public List<Object[]> grapheVolumeParClasse(@Param("rId") Long rId, @Param("id") Long eid,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("classe") String classe,

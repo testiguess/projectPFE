@@ -31,4 +31,4 @@ INSERT INTO passage (id, classe_vehicule, date, gap, gross, headway, overloaded,
 
 INSERT INTO passage (id, classe_vehicule, date, gap, gross, headway, overloaded, speed_kmh,timestamp, time, type_poids, equip_id , voie_id, vehicule_id)Values(2, 'EU13-3', '2020-02-20', 120, 4000, 210, 'N', 90,'2020-02-20 02:12:11', '02:12:11', 'PL', 4, 7, 10);
 
-INSERT INTO passage (id, classe_vehicule, date, gap, gross, headway, overloaded, speed_kmh,timestamp, time, type_poids, equip_id , voie_id, vehicule_id)Values(20, 'EU13-1', '2020-01-20', 120, 300, 200, 'N', 90,'2020-01-20 02:12:11' ,'02:12:11', 'VL', 5, 6, 11);
+INSERT INTO passage (id, classe_vehicule, date, gap, gross, headway, overloaded, speed_kmh,timestamp, time, type_poids, equip_id , voie_id, vehicule_id)Values(20, 'EU13-1', '2020-01-20', 120, 300, 200, 'N', 90,'2020-01-20 02:12:11' ,'02:12:11', 'VL', 4, 6, 11);
