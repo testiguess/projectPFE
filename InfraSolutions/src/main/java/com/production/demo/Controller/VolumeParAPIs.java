@@ -57,7 +57,7 @@ public class VolumeParAPIs {
 	@PostMapping("/volumeParClasse")
 	public ResponseEntity<Object> volumeParClasse(@Valid @RequestBody ParClasseVariablesTable pCv) {
 		List<VolumeParResponseObject> m = passageInfo.volumeParClasse(pCv.resId, pCv.equipId, pCv.modeUtil,
-				pCv.debutTime, pCv.finTime, pCv.typePoid, pCv.classes, pCv.sens);
+				pCv.debutTime, pCv.finTime, pCv.typePoid, pCv.classes,pCv.voie);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(
 					new ResourceNotFoundException("pas vehicule passant pour ces classe" + pCv.classes),
@@ -125,7 +125,7 @@ public class VolumeParAPIs {
 		Map<String, List<Object[]>> map = new HashMap<>();
 		for (String classe : pCv.classes) {
 			map.put(classe, passageInfo.grapheVolumeParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
-					pCv.finTime, pCv.typePoid, classe, pCv.sens));
+					pCv.finTime, pCv.typePoid, classe, pCv.voie));
 		}
 		if (map.isEmpty()) {
 			return new ResponseEntity<>(

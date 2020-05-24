@@ -30,9 +30,9 @@ public class PassageInfo {
 
 	// VolumeParClasse
 	public List<VolumeParResponseObject> volumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, String[] classes, String sens) {
+			LocalDateTime finTime, String typeP, String[] classes,int[] voies) {
 		List<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, typeP,
-				classes, sens);
+				classes, voies);
 		return m;
 	}
 
@@ -70,8 +70,8 @@ public class PassageInfo {
 
 	// GrapheVolumeParClasse
 	public List<Object[]> grapheVolumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, String classe, String sens) {
-		List<Object[]> m = passageRepo.grapheVolumeParClasse(rId, eId, mode, debutTime, finTime, typeP, classe, sens);
+			LocalDateTime finTime, String typeP, String classe, int[] voie) {
+		List<Object[]> m = passageRepo.grapheVolumeParClasse(rId, eId, mode, debutTime, finTime, typeP, classe, voie);
 		return m;
 	}
 
