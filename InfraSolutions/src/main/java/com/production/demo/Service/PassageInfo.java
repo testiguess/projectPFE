@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,7 +104,8 @@ public class PassageInfo {
 			v.put(((int) m.get(i)[0] / 10) * 10,
 					v.get(((int) m.get(i)[0] / 10) * 10) + ((Long) m.get(i)[1]).intValue());
 		}
-		return v;
+		Map<Integer, Integer> s = new TreeMap<>(v);
+		return s;
 	}
 
 	// GrapheVolumeParRoute
