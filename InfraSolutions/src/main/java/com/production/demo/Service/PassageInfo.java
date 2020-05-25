@@ -1,5 +1,6 @@
 package com.production.demo.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,11 @@ public class PassageInfo {
 	@Autowired
 	private PassageRepo passageRepo;
 
+	// Liste Days (Repartition Journaliere)
+	enum Days {
+		SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
+	}
+
 	// VolumeParPeriode
 	public List<VolumeParResponseObject> volumeParPeriode(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
@@ -29,9 +35,9 @@ public class PassageInfo {
 
 	// VolumeParClasse
 	public List<VolumeParResponseObject> volumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, String[] classes, int[] voies) {
-		List<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, typeP,
-				classes, voies);
+			LocalDateTime finTime, String[] classes, int[] voies) {
+		List<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, classes,
+				voies);
 		return m;
 	}
 
@@ -69,8 +75,8 @@ public class PassageInfo {
 
 	// GrapheVolumeParClasse
 	public List<Object[]> grapheVolumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, String classe, int[] voie) {
-		List<Object[]> m = passageRepo.grapheVolumeParClasse(rId, eId, mode, debutTime, finTime, typeP, classe, voie);
+			LocalDateTime finTime, String classe, int[] voie) {
+		List<Object[]> m = passageRepo.grapheVolumeParClasse(rId, eId, mode, debutTime, finTime, classe, voie);
 		return m;
 	}
 
@@ -127,7 +133,8 @@ public class PassageInfo {
 		return m;
 	}
 
-	// Menu Véhicule Table
+	// Menu Vehicules ****************************
+	// Véhicule Table
 	public List<VolumeParResponseObject> vehiculeTable(Long rId, String mode, Long eId, LocalDateTime debutTime,
 			LocalDateTime finTime, int speed1, int speed2, int long1, int long2) {
 		List<VolumeParResponseObject> m = passageRepo.vehiculeTable(rId, eId, mode, debutTime, finTime, speed1, speed2,
@@ -135,7 +142,7 @@ public class PassageInfo {
 		return m;
 	}
 
-	// Menu Vehicule Graphe(PL/PT)
+	// Véhicule Graphe(PL/PT)
 	public Map<String, List<Integer>> graphePlPt(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime) {
 		// ResultSet From SQL Query
@@ -146,7 +153,6 @@ public class PassageInfo {
 		m.put("Poids Lourd", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "VL"));
 		m.put("Poids Total", passageRepo.graphePlPt(rId, eId, mode, debutTime, finTime, "T"));
 
-		
 		for (String key : m.keySet()) {
 			List<Integer> holder = new ArrayList<>();
 			for (int i = 0; i < 24; i++) {
@@ -154,7 +160,7 @@ public class PassageInfo {
 			}
 			List<Object[]> listHeure = m.get(key);
 			for (Object[] o : listHeure) {
-				holder.set((Integer) o[0], ((Long)o[1]).intValue());
+				holder.set((Integer) o[0], ((Long) o[1]).intValue());
 			}
 			list.put(key, holder);
 
@@ -163,4 +169,82 @@ public class PassageInfo {
 		return list;
 
 	}
+
+	// MenuVitesse ****************************
+	// Vitesse Par Periode (Horaire)
+	public Map<String, List<Integer>> vitesseParH(Long rId, Long eid, String mode, LocalDateTime times1,
+			LocalDateTime times2) {
+		// ResultSet From SQL Query
+		Map<String, List<Object[]>> m = new HashMap<>();
+		// Result {"key":[2,7,...]...}
+		Map<String, List<Integer>> list = new HashMap<>();
+
+		m.put("Poids Lourd", passageRepo.vitesseParH(rId, eid, mode, times1, times2, "VL"));
+		m.put("Véhicule leger", passageRepo.vitesseParH(rId, eid, mode, times1, times2, "PL"));
+
+		for (String key : m.keySet()) {
+			List<Integer> holder = new ArrayList<>();
+			for (int i = 0; i < 24; i++) {
+				holder.add(0);
+			}
+			List<Object[]> listHeure = m.get(key);
+			for (Object[] o : listHeure) {
+				holder.set((Integer) o[0], ((Double) o[1]).intValue());
+			}
+			list.put(key, holder);
+
+		}
+
+		return list;
+
+	}
+
+	// Vitesse Par Periode (Journaliere)
+	public Map<String, List<Object[]>> vitesseParJ(Long rId, Long eid, String mode, LocalDateTime times1,
+			LocalDateTime times2) {
+
+		Map<String, List<Object[]>> m = new HashMap<>();
+		m.put("Poids Leger", passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "PL"));
+		m.put("Poids Lourd", passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "VL"));
+		for (String key : m.keySet()) {
+			Days[] days = Days.values();
+			List<Object[]> listDays = m.get(key);
+			List<Object[]> listValues = new ArrayList<>();
+			for (Days day : days) {
+
+				int daySpeedCounter = 0;
+				int daySpeed = 0;
+				for (Object[] o : listDays) {
+					if ((((LocalDate) o[0]).getDayOfWeek()).toString() == day.toString()) {
+						daySpeed += ((Long) o[1]).intValue();
+						daySpeedCounter += ((Long) o[2]).intValue();
+					}
+				}
+				if (daySpeedCounter == 0) {
+					Object[] n = { day, 0 };
+					listValues.add(n);
+				} else {
+					Object[] n = { day, (int) (daySpeed / daySpeedCounter) };
+					listValues.add(n);
+				}
+			}
+			m.put(key, listValues);
+		}
+		return m;
+	}
+
+	//Vitesse Par Classe
+	public List<Object[]> vitesseParClasse(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2,
+			String classe, int voie) {
+		List<Object[]> m = passageRepo.vitesseParClasse(rId, eid, mode, times1, times2, classe, voie);
+		return m;
+
+	}
+	//Vitesse Par Route
+	public List<Object[]> vitesseParRoute(Long rId, String mode, Long eId, LocalDateTime debutTime,
+			LocalDateTime finTime, String typeP) {
+		List<Object[]> m = passageRepo.vitesseParRoute(rId, mode, eId, debutTime, finTime, typeP);
+		return m;
+	}
+
 }

@@ -57,7 +57,7 @@ public class VolumeParAPIs {
 	@PostMapping("/volumeParClasse")
 	public ResponseEntity<Object> volumeParClasse(@Valid @RequestBody ParClasseVariablesTable pCv) {
 		List<VolumeParResponseObject> m = passageInfo.volumeParClasse(pCv.resId, pCv.equipId, pCv.modeUtil,
-				pCv.debutTime, pCv.finTime, pCv.typePoid, pCv.classes,pCv.voie);
+				pCv.debutTime, pCv.finTime, pCv.classes, pCv.voie);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(
 					new ResourceNotFoundException("pas vehicule passant pour ces classe" + pCv.classes),
@@ -125,7 +125,7 @@ public class VolumeParAPIs {
 		Map<String, List<Object[]>> map = new HashMap<>();
 		for (String classe : pCv.classes) {
 			map.put(classe, passageInfo.grapheVolumeParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
-					pCv.finTime, pCv.typePoid, classe, pCv.voie));
+					pCv.finTime, classe, pCv.voie));
 		}
 		if (map.isEmpty()) {
 			return new ResponseEntity<>(
@@ -157,10 +157,9 @@ public class VolumeParAPIs {
 			map.put(eId, passageInfo.grapheVolumeParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime,
 					pr.typePoid));
 		}
-		;
 		if (map.isEmpty()) {
 			return new ResponseEntity<>(
-					new ResourceNotFoundException("pas vehicule passant dans cette route durant cette période"),
+					new ResourceNotFoundException("pas vehicule passant dans ces routes durant cette période"),
 					HttpStatus.NOT_FOUND);
 		} else {
 			return new ResponseEntity<>(map, HttpStatus.OK);
@@ -226,6 +225,74 @@ public class VolumeParAPIs {
 
 	}
 
+	@PostMapping("/vitesseParPeriodeHoraire")
+	public ResponseEntity<Object> vitesseParH(@Valid @RequestBody RepeatingVariables pr) {
+		Map<String, List<Integer>> m = passageInfo.vitesseParH(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
+				pr.finTime);
+		if (m.isEmpty()) {
+			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
+					HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(m, HttpStatus.OK);
+		}
+
+	}
+
+	@PostMapping("/vitesseParPeriodeJournaliere")
+	public ResponseEntity<Object> vitesseParJ(@Valid @RequestBody RepeatingVariables pr) {
+		Map<String, List<Object[]>> m = passageInfo.vitesseParJ(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
+				pr.finTime);
+		if (m.isEmpty()) {
+			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
+					HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(m, HttpStatus.OK);
+		}
+
+	}
+
+	@PostMapping("/vitesseParClasse")
+	public ResponseEntity<Object> vitesseParClasse(@Valid @RequestBody ParClasseVariables pCv) {
+
+		Map<String, Map<Integer, List<Object[]>>> mapClasse = new HashMap<>();
+		for (String classe : pCv.classes) {
+			Map<Integer, List<Object[]>> map = new HashMap<>();
+			for (int v : pCv.voie) {
+				map.put(v, passageInfo.vitesseParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
+						pCv.finTime, classe, v));
+			}
+			mapClasse.put(classe, map);
+		}
+		if (mapClasse.isEmpty()) {
+			return new ResponseEntity<>(
+					new ResourceNotFoundException("pas vehicule passant pour ces classe" + pCv.classes),
+					HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(mapClasse, HttpStatus.OK);
+		}
+
+	}
+
+	@PostMapping("/vitesseParRoute")
+	public ResponseEntity<Object> vitesseParRoute(@Valid @RequestBody ParRouteVariables pr) {
+		Map<Long, Map<String, List<Object[]>>> mapRoute = new HashMap<>();
+		for (Long eId : pr.equipIds) {
+			Map<String, List<Object[]>> map = new HashMap<>();
+			map.put("Poids Lourd",
+					passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "VL"));
+			map.put("Poids Legers",
+					passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "PL"));
+			mapRoute.put(eId, map);
+		}
+		if (mapRoute.isEmpty()) {
+			return new ResponseEntity<>(
+					new ResourceNotFoundException("pas vehicule passant dans ces routes durant cette période"),
+					HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(mapRoute, HttpStatus.OK);
+		}
+	}
+
 	@GetMapping("/{id}/equipements")
 	public List<Long> allEquip(@Valid @PathVariable("id") Long i) {
 		return equipRepo.equipParRes(i);
@@ -235,4 +302,5 @@ public class VolumeParAPIs {
 	public List<Long> allReseau() {
 		return resRepo.allReseau();
 	}
+
 }
