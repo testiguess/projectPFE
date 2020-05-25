@@ -240,7 +240,7 @@ public class VolumeParAPIs {
 
 	@PostMapping("/vitesseParPeriodeJournaliere")
 	public ResponseEntity<Object> vitesseParJ(@Valid @RequestBody RepeatingVariables pr) {
-		Map<String, List<Object[]>> m = passageInfo.vitesseParJ(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
+		Map<String, List<Integer>> m = passageInfo.vitesseParJ(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
 				pr.finTime);
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),

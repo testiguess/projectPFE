@@ -200,16 +200,25 @@ public class PassageInfo {
 	}
 
 	// Vitesse Par Periode (Journaliere)
-	public Map<String, List<Object[]>> vitesseParJ(Long rId, Long eid, String mode, LocalDateTime times1,
+	public Map<String, List<Integer>> vitesseParJ(Long rId, Long eid, String mode, LocalDateTime times1,
 			LocalDateTime times2) {
 
+		// ResultSet From SQL Query
 		Map<String, List<Object[]>> m = new HashMap<>();
+		// Result {"key":[2,7,...]...}
+		Map<String, List<Integer>> list = new HashMap<>();
 		m.put("Poids Leger", passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "PL"));
 		m.put("Poids Lourd", passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "VL"));
 		for (String key : m.keySet()) {
+			
 			Days[] days = Days.values();
 			List<Object[]> listDays = m.get(key);
-			List<Object[]> listValues = new ArrayList<>();
+			List<Integer> holder = new ArrayList<>();
+			int holderIndex=0;
+			for (int i = 0; i < 7; i++) {
+				holder.add(0);
+			}
+
 			for (Days day : days) {
 
 				int daySpeedCounter = 0;
@@ -220,27 +229,25 @@ public class PassageInfo {
 						daySpeedCounter += ((Long) o[2]).intValue();
 					}
 				}
-				if (daySpeedCounter == 0) {
-					Object[] n = { day, 0 };
-					listValues.add(n);
-				} else {
-					Object[] n = { day, (int) (daySpeed / daySpeedCounter) };
-					listValues.add(n);
+				if (daySpeedCounter != 0) {
+					holder.set(holderIndex ,(int) (daySpeed / daySpeedCounter));
 				}
+				holderIndex+=1;
 			}
-			m.put(key, listValues);
+			list.put(key, holder);
 		}
-		return m;
+		return list;
 	}
 
-	//Vitesse Par Classe
+	// Vitesse Par Classe
 	public List<Object[]> vitesseParClasse(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2,
 			String classe, int voie) {
 		List<Object[]> m = passageRepo.vitesseParClasse(rId, eid, mode, times1, times2, classe, voie);
 		return m;
 
 	}
-	//Vitesse Par Route
+
+	// Vitesse Par Route
 	public List<Object[]> vitesseParRoute(Long rId, String mode, Long eId, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
 		List<Object[]> m = passageRepo.vitesseParRoute(rId, mode, eId, debutTime, finTime, typeP);
