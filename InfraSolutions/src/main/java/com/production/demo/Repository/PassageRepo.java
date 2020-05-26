@@ -261,7 +261,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			@Param("typePoid") String typeP);
 
 	// Vitesse Classe Graphe
-	@Query("SELECT AVG(p.speed), p.classe "
+	@Query("SELECT AVG(p.speed)"
 
 			+ "FROM Passage p "
 
@@ -275,7 +275,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			@Param("classe") String classe, @Param("voie") int voie);
 
 	// Vitesse Route Graphe
-	@Query("SELECT AVG(p.speed) , e.id "
+	@Query("SELECT AVG(p.speed) "
 
 			+ "FROM Passage p "
 
@@ -285,7 +285,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "AND p.typePoid is not :typePoid AND e.id=:eId "
 
 			+ "GROUP BY e.id")
-	public List<Object[]> vitesseParRoute(@Param("rId") Long rId, @Param("mode") String mode,
+	public List<Object> vitesseParRoute(@Param("rId") Long rId, @Param("mode") String mode,
 			@Param("eId") Long eId, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
 

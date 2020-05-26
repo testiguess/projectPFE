@@ -254,35 +254,32 @@ public class VolumeParAPIs {
 	@PostMapping("/vitesseParClasse")
 	public ResponseEntity<Object> vitesseParClasse(@Valid @RequestBody ParClasseVariables pCv) {
 
-		Map<String, Map<Integer, List<Object[]>>> mapClasse = new HashMap<>();
+		Map<String,List<Object[]>> map = new HashMap<>();
 		for (String classe : pCv.classes) {
-			Map<Integer, List<Object[]>> map = new HashMap<>();
 			for (int v : pCv.voie) {
-				map.put(v, passageInfo.vitesseParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
+				map.put(classe+"_"+v, passageInfo.vitesseParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
 						pCv.finTime, classe, v));
 			}
-			mapClasse.put(classe, map);
+		
 		}
-		if (mapClasse.isEmpty()) {
+		if (map.isEmpty()) {
 			return new ResponseEntity<>(
 					new ResourceNotFoundException("pas vehicule passant pour ces classe" + pCv.classes),
 					HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>(mapClasse, HttpStatus.OK);
+			return new ResponseEntity<>(map, HttpStatus.OK);
 		}
 
 	}
 
 	@PostMapping("/vitesseParRoute")
 	public ResponseEntity<Object> vitesseParRoute(@Valid @RequestBody ParRouteVariables pr) {
-		Map<Long, Map<String, List<Object[]>>> mapRoute = new HashMap<>();
+		Map<String, List<Object>> mapRoute = new HashMap<>();
 		for (Long eId : pr.equipIds) {
-			Map<String, List<Object[]>> map = new HashMap<>();
-			map.put("Poids Lourd",
+			mapRoute.put(eId.toString()+"_"+"Poids Lourd",
 					passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "VL"));
-			map.put("Poids Legers",
+			mapRoute.put(eId.toString()+"_"+"Vehicule Legers",
 					passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "PL"));
-			mapRoute.put(eId, map);
 		}
 		if (mapRoute.isEmpty()) {
 			return new ResponseEntity<>(
