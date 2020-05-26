@@ -240,9 +240,9 @@ public class PassageInfo {
 	}
 
 	// Vitesse Par Classe
-	public List<Object[]> vitesseParClasse(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2,
+	public List<Object> vitesseParClasse(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2,
 			String classe, int voie) {
-		List<Object[]> m = passageRepo.vitesseParClasse(rId, eid, mode, times1, times2, classe, voie);
+		List<Object> m = passageRepo.vitesseParClasse(rId, eid, mode, times1, times2, classe, voie);
 		return m;
 
 	}

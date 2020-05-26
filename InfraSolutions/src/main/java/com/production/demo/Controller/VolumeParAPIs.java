@@ -254,7 +254,7 @@ public class VolumeParAPIs {
 	@PostMapping("/vitesseParClasse")
 	public ResponseEntity<Object> vitesseParClasse(@Valid @RequestBody ParClasseVariables pCv) {
 
-		Map<String,List<Object[]>> map = new HashMap<>();
+		Map<String,List<Object>> map = new HashMap<>();
 		for (String classe : pCv.classes) {
 			for (int v : pCv.voie) {
 				map.put(classe+"_"+v, passageInfo.vitesseParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
