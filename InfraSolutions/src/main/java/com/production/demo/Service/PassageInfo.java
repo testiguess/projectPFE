@@ -240,17 +240,17 @@ public class PassageInfo {
 	}
 
 	// Vitesse Par Classe
-	public List<Object> vitesseParClasse(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2,
+	public List<Double> vitesseParClasse(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2,
 			String classe, int voie) {
-		List<Object> m = passageRepo.vitesseParClasse(rId, eid, mode, times1, times2, classe, voie);
+		List<Double> m = passageRepo.vitesseParClasse(rId, eid, mode, times1, times2, classe, voie);
 		return m;
 
 	}
 
 	// Vitesse Par Route
-	public List<Object> vitesseParRoute(Long rId, String mode, Long eId, LocalDateTime debutTime,
+	public List<Double> vitesseParRoute(Long rId, String mode, Long eId, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
-		List<Object> m = passageRepo.vitesseParRoute(rId, mode, eId, debutTime, finTime, typeP);
+		List<Double> m = passageRepo.vitesseParRoute(rId, mode, eId, debutTime, finTime, typeP);
 		return m;
 	}
 

@@ -254,13 +254,18 @@ public class VolumeParAPIs {
 	@PostMapping("/vitesseParClasse")
 	public ResponseEntity<Object> vitesseParClasse(@Valid @RequestBody ParClasseVariables pCv) {
 
-		Map<String,List<Object>> map = new HashMap<>();
+		Map<String, Double> map = new HashMap<>();
 		for (String classe : pCv.classes) {
 			for (int v : pCv.voie) {
-				map.put(classe+"_"+v, passageInfo.vitesseParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
-						pCv.finTime, classe, v));
+				List<Double> m = passageInfo.vitesseParClasse(pCv.resId, pCv.equipId, pCv.modeUtil, pCv.debutTime,
+						pCv.finTime, classe, v);
+				if (m.isEmpty()) {
+					map.put(classe + "_" + v, 0.0);
+				} else {
+					map.put(classe + "_" + v, m.get(0));
+				}
 			}
-		
+
 		}
 		if (map.isEmpty()) {
 			return new ResponseEntity<>(
@@ -274,12 +279,22 @@ public class VolumeParAPIs {
 
 	@PostMapping("/vitesseParRoute")
 	public ResponseEntity<Object> vitesseParRoute(@Valid @RequestBody ParRouteVariables pr) {
-		Map<String, List<Object>> mapRoute = new HashMap<>();
+		Map<String, Double> mapRoute = new HashMap<>();
 		for (Long eId : pr.equipIds) {
-			mapRoute.put(eId.toString()+"_"+"Poids Lourd",
-					passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "VL"));
-			mapRoute.put(eId.toString()+"_"+"Vehicule Legers",
-					passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "PL"));
+			List<Double> pl = passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "VL");
+			List<Double> vl = passageInfo.vitesseParRoute(pr.resId, pr.modeUtil, eId, pr.debutTime, pr.finTime, "PL");
+			if (pl.isEmpty()) {
+				mapRoute.put(eId.toString() + "_" + "Poids Lourd", 0.0);
+			}
+			if (vl.isEmpty()) {
+				mapRoute.put(eId.toString() + "_" + "Vehicule Legers", 0.0);
+			}
+			if (!(pl.isEmpty())) {
+				mapRoute.put(eId.toString() + "_" + "Poids Lourd", pl.get(0));
+			}
+			if (!(vl.isEmpty())) {
+				mapRoute.put(eId.toString() + "_" + "Vehicule Legers", vl.get(0));
+			}
 		}
 		if (mapRoute.isEmpty()) {
 			return new ResponseEntity<>(

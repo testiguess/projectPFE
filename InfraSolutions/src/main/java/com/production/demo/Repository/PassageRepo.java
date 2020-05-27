@@ -270,7 +270,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.classe=:classe " + "AND v.numero=:voie "
 			+ "GROUP BY p.classe")
-	public List<Object> vitesseParClasse(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
+	public List<Double> vitesseParClasse(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
 			@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2,
 			@Param("classe") String classe, @Param("voie") int voie);
 
@@ -285,7 +285,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "AND p.typePoid is not :typePoid AND e.id=:eId "
 
 			+ "GROUP BY e.id")
-	public List<Object> vitesseParRoute(@Param("rId") Long rId, @Param("mode") String mode,
+	public List<Double> vitesseParRoute(@Param("rId") Long rId, @Param("mode") String mode,
 			@Param("eId") Long eId, @Param("timestamp1") LocalDateTime times1,
 			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
 
