@@ -178,10 +178,11 @@ public class PassageInfo {
 		Map<String, List<Object[]>> m = new HashMap<>();
 		// Result {"key":[2,7,...]...}
 		Map<String, List<Integer>> list = new HashMap<>();
-
-		m.put("Poids Lourd", passageRepo.vitesseParH(rId, eid, mode, times1, times2, "VL"));
-		m.put("Véhicule leger", passageRepo.vitesseParH(rId, eid, mode, times1, times2, "PL"));
-
+		List<String> listSens = passageRepo.voiesParReseau(rId);
+		for (String s : listSens) {
+			m.put("Poids Lourd" + "_" + s, passageRepo.vitesseParH(rId, eid, mode, times1, times2, "VL", s));
+			m.put("Véhicule Leger" + "_" + s, passageRepo.vitesseParH(rId, eid, mode, times1, times2, "PL", s));
+		}
 		for (String key : m.keySet()) {
 			List<Integer> holder = new ArrayList<>();
 			for (int i = 0; i < 24; i++) {
@@ -207,14 +208,17 @@ public class PassageInfo {
 		Map<String, List<Object[]>> m = new HashMap<>();
 		// Result {"key":[2,7,...]...}
 		Map<String, List<Integer>> list = new HashMap<>();
-		m.put("Poids Leger", passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "PL"));
-		m.put("Poids Lourd", passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "VL"));
+		List<String> listSens = passageRepo.voiesParReseau(rId);
+		for (String s : listSens) {
+			m.put("Véhicule Leger" + "_" + s, passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "PL", s));
+			m.put("Poids Lourd" + "_" + s, passageRepo.vitesseParJ(rId, eid, mode, times1, times2, "VL", s));
+		}
 		for (String key : m.keySet()) {
-			
+
 			Days[] days = Days.values();
 			List<Object[]> listDays = m.get(key);
 			List<Integer> holder = new ArrayList<>();
-			int holderIndex=0;
+			int holderIndex = 0;
 			for (int i = 0; i < 7; i++) {
 				holder.add(0);
 			}
@@ -230,9 +234,9 @@ public class PassageInfo {
 					}
 				}
 				if (daySpeedCounter != 0) {
-					holder.set(holderIndex ,(int) (daySpeed / daySpeedCounter));
+					holder.set(holderIndex, (int) (daySpeed / daySpeedCounter));
 				}
-				holderIndex+=1;
+				holderIndex += 1;
 			}
 			list.put(key, holder);
 		}
@@ -248,10 +252,15 @@ public class PassageInfo {
 	}
 
 	// Vitesse Par Route
-	public List<Double> vitesseParRoute(Long rId, String mode, Long eId, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP) {
+	public List<Double> vitesseParRoute(Long rId, String mode, Long eId, LocalDateTime debutTime, LocalDateTime finTime,
+			String typeP) {
 		List<Double> m = passageRepo.vitesseParRoute(rId, mode, eId, debutTime, finTime, typeP);
 		return m;
+	}
+
+	// TempReel
+	public List<VolumeParResponseObject> tempReel(Long rId, Long eid, String mode, int[] num) {
+		return passageRepo.tempReel(rId, eid, mode, num);
 	}
 
 }

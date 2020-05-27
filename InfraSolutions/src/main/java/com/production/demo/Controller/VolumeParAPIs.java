@@ -304,6 +304,19 @@ public class VolumeParAPIs {
 			return new ResponseEntity<>(mapRoute, HttpStatus.OK);
 		}
 	}
+	
+	@PostMapping("/tempsReel")
+	public ResponseEntity<Object> tempsReel(@Valid @RequestBody RepeatingVariables pr) {
+		List<VolumeParResponseObject> m = passageInfo.tempReel(pr.resId, pr.equipId, pr.modeUtil, pr.voie);
+		if (m.isEmpty()) {
+			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
+					HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(m, HttpStatus.OK);
+		}
+
+	}
+	
 
 	@GetMapping("/{id}/equipements")
 	public List<Long> allEquip(@Valid @PathVariable("id") Long i) {

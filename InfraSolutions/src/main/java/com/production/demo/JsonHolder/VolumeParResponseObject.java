@@ -9,6 +9,8 @@ public class VolumeParResponseObject {
 	private int nombreEssieu;
 	private LocalDate date;
 	private LocalTime time;
+	private int poids_total;
+	private int gap;
 	private String classe;
 	private int vitesse;
 	private int headway;
@@ -54,6 +56,22 @@ public class VolumeParResponseObject {
 
 	public void setTime(LocalTime time) {
 		this.time = time;
+	}
+
+	public int getPoids_total() {
+		return poids_total;
+	}
+
+	public void setPoids_total(int poids_total) {
+		this.poids_total = poids_total;
+	}
+
+	public int getGap() {
+		return gap;
+	}
+
+	public void setGap(int gap) {
+		this.gap = gap;
 	}
 
 	public String getClasse() {
@@ -131,6 +149,26 @@ public class VolumeParResponseObject {
 		this.vitesse = vitesse;
 		this.headway = headway;
 		this.surcharge = overloaded;
+		this.voie = voie;
+		this.sens = sens;
+	}
+
+	
+	 public VolumeParResponseObject(Long id, int longueur, int nombreEssieu, LocalDate date, LocalTime time,
+			int poids_total, int gap, String classe, int vitesse, int headway, String surcharge, int voie,
+			String sens) {
+		super();
+		this.id = id;
+		this.longueur = longueur;
+		this.nombreEssieu = nombreEssieu;
+		this.date = date;
+		this.time = time;
+		this.poids_total = poids_total;
+		this.gap = gap;
+		this.classe = classe;
+		this.vitesse = vitesse;
+		this.headway = headway;
+		this.surcharge = surcharge;
 		this.voie = voie;
 		this.sens = sens;
 	}

@@ -1,6 +1,5 @@
 package com.production.demo.Model;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,7 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -46,12 +44,12 @@ public class Passage {
 	@Column(nullable = false)
 	private int headway;
 
+	@Column(nullable = false)
 	private String overloaded;
 
 	@Column(nullable = false)
 	private int gap;
 
-	@Column(nullable = false)
 	private int gross;
 
 	@NotBlank

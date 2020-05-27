@@ -240,11 +240,12 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.typePoid is not :typePoid "
+			+ " AND v.sens=:sens "
 
 			+ "GROUP BY HOUR(p.time) ")
 	public List<Object[]> vitesseParH(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
 			@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2,
-			@Param("typePoid") String typeP);
+			@Param("typePoid") String typeP, @Param("sens") String sens);
 
 	@Query("SELECT p.date , SUM(p.speed),count(p)  "
 
@@ -254,11 +255,12 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.typePoid is not :typePoid "
+			+ "AND v.sens=:sens "
 
 			+ "GROUP BY p.date ")
 	public List<Object[]> vitesseParJ(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
 			@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2,
-			@Param("typePoid") String typeP);
+			@Param("typePoid") String typeP, @Param("sens") String sens);
 
 	// Vitesse Classe Graphe
 	@Query("SELECT AVG(p.speed)"
@@ -285,8 +287,25 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "AND p.typePoid is not :typePoid AND e.id=:eId "
 
 			+ "GROUP BY e.id")
-	public List<Double> vitesseParRoute(@Param("rId") Long rId, @Param("mode") String mode,
-			@Param("eId") Long eId, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
+	public List<Double> vitesseParRoute(@Param("rId") Long rId, @Param("mode") String mode, @Param("eId") Long eId,
+			@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2,
+			@Param("typePoid") String typeP);
+
+	// Temps Réel
+	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseObject( ve.id, ve.longueur, ve.numEssieu as nombreEssieu,"
+			+ "p.date, p.time,p.gross as poids_total,p.gap, p.classe, p.speed as vitesse, p.headway, p.overloaded as surcharge, "
+			+ "v.numero as voie, v.sens) "
+
+			+ "FROM Passage p "
+
+			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
+
+			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode " + "AND v.numero IN :numero")
+	public List<VolumeParResponseObject> tempReel(@Param("rId") Long rId, @Param("id") Long eid,
+			@Param("mode") String mode, @Param("numero") int[] num);
+
+	// Voie in a Reseau
+	@Query("SELECT  v.sens " + "FROM Voie v " + "JOIN v.reseau r " + "WHERE r.id=:id")
+	public List<String> voiesParReseau(@Param("id") Long id);
 
 }
