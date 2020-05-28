@@ -3,6 +3,8 @@ package com.production.demo.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,9 +30,9 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.typePoid is not :typePoid")
-	public List<VolumeParResponseObject> findVolumeParPeriode(@Param("rId") Long rId, @Param("id") Long eid,
+	public Page<VolumeParResponseObject> findVolumeParPeriode(@Param("rId") Long rId, @Param("id") Long eid,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
+			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, Pageable p );
 
 	// VolumeParClasse Table
 	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseObject( ve.id, ve.longueur, ve.numEssieu as nombreEssieu,"
@@ -44,9 +46,9 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode "
 			+ "AND p.timestamp between :timestamp1 AND :timestamp2 " + "AND p.classe in :classes "
 			+ " AND v.numero IN :voies")
-	public List<VolumeParResponseObject> findVolumeParClasse(@Param("rId") Long rId, @Param("id") Long eid,
+	public Page<VolumeParResponseObject> findVolumeParClasse(@Param("rId") Long rId, @Param("id") Long eid,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("classes") String[] classes, @Param("voies") int[] voies);
+			@Param("timestamp2") LocalDateTime times2, @Param("classes") String[] classes, @Param("voies") int[] voies, Pageable p);
 
 	// VolumeParVitesse Table
 	// ********TODO
@@ -63,9 +65,9 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 
 			+ "WHERE r.id=:rId " + "AND e.mode=:mode " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
 			+ "AND p.typePoid is not :typePoid " + " AND e.id IN :eIds")
-	public List<VolumeParResponseParRoute> findVolumeParRoute(@Param("rId") Long rId, @Param("eIds") Long[] eIds,
+	public Page<VolumeParResponseParRoute> findVolumeParRoute(@Param("rId") Long rId, @Param("eIds") Long[] eIds,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP);
+			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, Pageable p);
 
 	// VolumeParVoie Table
 	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseParRoute( e.id as equipementID ,ve.id as véhiculeID,"
@@ -80,9 +82,9 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "WHERE r.id=:rId " + "AND e.mode=:mode " + " AND e.id=:eId "
 			+ " AND p.timestamp between :timestamp1 AND :timestamp2 "
 			+ "AND p.typePoid is not :typePoid AND v.numero IN :voies")
-	public List<VolumeParResponseParRoute> findVolumeParVoie(@Param("rId") Long rId, @Param("eId") Long eId,
+	public Page<VolumeParResponseParRoute> findVolumeParVoie(@Param("rId") Long rId, @Param("eId") Long eId,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("voies") int[] voies);
+			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("voies") int[] voies, Pageable p);
 
 	// VolumeParSens Table
 	@Query("SELECT new com.production.demo.JsonHolder.VolumeParResponseParRoute( e.id as equipementID ,ve.id as véhiculeID,"
@@ -97,9 +99,9 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "WHERE r.id=:rId " + "AND e.mode=:mode " + " AND e.id=:eId "
 			+ " AND p.timestamp between :timestamp1 AND :timestamp2 "
 			+ "AND p.typePoid is not :typePoid AND v.sens IN :sens")
-	public List<VolumeParResponseParRoute> findVolumeParSens(@Param("rId") Long rId, @Param("eId") Long eId,
+	public Page<VolumeParResponseParRoute> findVolumeParSens(@Param("rId") Long rId, @Param("eId") Long eId,
 			@Param("mode") String mode, @Param("timestamp1") LocalDateTime times1,
-			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("sens") String[] sens);
+			@Param("timestamp2") LocalDateTime times2, @Param("typePoid") String typeP, @Param("sens") String[] sens, Pageable p);
 
 	// ******** Resultat sous forme Graphique ********
 	// VolumeParPeriode
@@ -301,8 +303,8 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
 
 			+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND e.mode=:mode " + "AND v.numero IN :numero")
-	public List<VolumeParResponseObject> tempReel(@Param("rId") Long rId, @Param("id") Long eid,
-			@Param("mode") String mode, @Param("numero") int[] num);
+	public Page<VolumeParResponseObject> tempReel(@Param("rId") Long rId, @Param("id") Long eid,
+			@Param("mode") String mode, @Param("numero") int[] num, Pageable p);
 
 	// Voie in a Reseau
 	@Query("SELECT  v.sens " + "FROM Voie v " + "JOIN v.reseau r " + "WHERE r.id=:id")

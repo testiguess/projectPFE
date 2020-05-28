@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.production.demo.JsonHolder.VolumeParResponseObject;
@@ -27,40 +31,45 @@ public class PassageInfo {
 	}
 
 	// VolumeParPeriode
-	public List<VolumeParResponseObject> volumeParPeriode(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP) {
-		List<VolumeParResponseObject> m = passageRepo.findVolumeParPeriode(rId, eId, mode, debutTime, finTime, typeP);
+	public Page<VolumeParResponseObject> volumeParPeriode(Long rId, Long eId, String mode, LocalDateTime debutTime,
+			LocalDateTime finTime, String typeP, int page, int size) {
+		Pageable p = PageRequest.of(page,size , Sort.by("date").descending().and(Sort.by("time").descending()));
+		Page<VolumeParResponseObject> m = passageRepo.findVolumeParPeriode(rId, eId, mode, debutTime, finTime, typeP,p);
 		return m;
 	}
 
 	// VolumeParClasse
-	public List<VolumeParResponseObject> volumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String[] classes, int[] voies) {
-		List<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, classes,
-				voies);
+	public Page<VolumeParResponseObject> volumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
+			LocalDateTime finTime, String[] classes, int[] voies, int page, int size) {
+		Pageable p = PageRequest.of(page,size , Sort.by("date").descending().and(Sort.by("time").descending()));
+		Page<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, classes,
+				voies,p);
 		return m;
 	}
 
 	// VolumeParRoute
-	public List<VolumeParResponseParRoute> volumeParRoute(Long rId, Long[] eIds, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP) {
-		List<VolumeParResponseParRoute> m = passageRepo.findVolumeParRoute(rId, eIds, mode, debutTime, finTime, typeP);
+	public Page<VolumeParResponseParRoute> volumeParRoute(Long rId, Long[] eIds, String mode, LocalDateTime debutTime,
+			LocalDateTime finTime, String typeP, int page, int size) {
+		Pageable p = PageRequest.of(page,size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		Page<VolumeParResponseParRoute> m = passageRepo.findVolumeParRoute(rId, eIds, mode, debutTime, finTime, typeP,p);
 		return m;
 	}
 
 	// VolumeParVoie
-	public List<VolumeParResponseParRoute> volumeParVoie(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, int[] voies) {
-		List<VolumeParResponseParRoute> m = passageRepo.findVolumeParVoie(rId, eId, mode, debutTime, finTime, typeP,
-				voies);
+	public Page<VolumeParResponseParRoute> volumeParVoie(Long rId, Long eId, String mode, LocalDateTime debutTime,
+			LocalDateTime finTime, String typeP, int[] voies ,int page, int size) {
+		Pageable p = PageRequest.of(page,size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		Page<VolumeParResponseParRoute> m = passageRepo.findVolumeParVoie(rId, eId, mode, debutTime, finTime, typeP,
+				voies,p);
 		return m;
 	}
 
 	// VolumeParSens
-	public List<VolumeParResponseParRoute> volumeParSens(Long rId, Long eId, String mode, LocalDateTime debutTime,
-			LocalDateTime finTime, String typeP, String[] sens) {
-		List<VolumeParResponseParRoute> m = passageRepo.findVolumeParSens(rId, eId, mode, debutTime, finTime, typeP,
-				sens);
+	public Page<VolumeParResponseParRoute> volumeParSens(Long rId, Long eId, String mode, LocalDateTime debutTime,
+			LocalDateTime finTime, String typeP, String[] sens,int page, int size) {
+		Pageable p = PageRequest.of(page,size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		Page<VolumeParResponseParRoute> m = passageRepo.findVolumeParSens(rId, eId, mode, debutTime, finTime, typeP,
+				sens,p);
 		return m;
 	}
 
@@ -259,8 +268,9 @@ public class PassageInfo {
 	}
 
 	// TempReel
-	public List<VolumeParResponseObject> tempReel(Long rId, Long eid, String mode, int[] num) {
-		return passageRepo.tempReel(rId, eid, mode, num);
+	public Page<VolumeParResponseObject> tempReel(Long rId, Long eid, String mode, int[] num,int page, int size) {
+		Pageable p = PageRequest.of(page,size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		return passageRepo.tempReel(rId, eid, mode, num,p);
 	}
 
 }

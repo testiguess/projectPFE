@@ -1,5 +1,6 @@
 package com.production.demo.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +43,10 @@ public class VolumeParAPIs {
 	@Autowired
 	private ReseauRepo resRepo;
 
-	@PostMapping("/volumeParPeriode")
-	public ResponseEntity<Object> volumeParPeriode(@Valid @RequestBody RepeatingVariables pr) {
+	@PostMapping("/volumeParPeriode/page={page}/size={size}")
+	public ResponseEntity<Object> volumeParPeriode(@Valid @RequestBody RepeatingVariables pr, @PathVariable("page")int page,@PathVariable("size")int size) {
 		List<VolumeParResponseObject> m = passageInfo.volumeParPeriode(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
-				pr.finTime, pr.typePoid);
+				pr.finTime, pr.typePoid,page,size).getContent();
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
@@ -54,10 +56,10 @@ public class VolumeParAPIs {
 
 	}
 
-	@PostMapping("/volumeParClasse")
-	public ResponseEntity<Object> volumeParClasse(@Valid @RequestBody ParClasseVariablesTable pCv) {
+	@PostMapping("/volumeParClasse/page={page}/size={size}")
+	public ResponseEntity<Object> volumeParClasse(@Valid @RequestBody ParClasseVariablesTable pCv, @PathVariable("page")int page,@PathVariable("size")int size) {
 		List<VolumeParResponseObject> m = passageInfo.volumeParClasse(pCv.resId, pCv.equipId, pCv.modeUtil,
-				pCv.debutTime, pCv.finTime, pCv.classes, pCv.voie);
+				pCv.debutTime, pCv.finTime, pCv.classes, pCv.voie,page,size).getContent();
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(
 					new ResourceNotFoundException("pas vehicule passant pour ces classe" + pCv.classes),
@@ -68,10 +70,10 @@ public class VolumeParAPIs {
 
 	}
 
-	@PostMapping("/volumeParRoute")
-	public ResponseEntity<Object> volumeParRoute(@Valid @RequestBody ParRouteVariables pr) {
+	@PostMapping("/volumeParRoute/page={page}/size={size}")
+	public ResponseEntity<Object> volumeParRoute(@Valid @RequestBody ParRouteVariables pr, @PathVariable("page")int page,@PathVariable("size")int size) {
 		List<VolumeParResponseParRoute> m = passageInfo.volumeParRoute(pr.resId, pr.equipIds, pr.modeUtil, pr.debutTime,
-				pr.finTime, pr.typePoid);
+				pr.finTime, pr.typePoid,page,size).getContent();
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
@@ -81,10 +83,10 @@ public class VolumeParAPIs {
 
 	}
 
-	@PostMapping("/volumeParVoie")
-	public ResponseEntity<Object> volumeParVoie(@Valid @RequestBody ParVoieVariables pr) {
+	@PostMapping("/volumeParVoie/page={page}/size={size}")
+	public ResponseEntity<Object> volumeParVoie(@Valid @RequestBody ParVoieVariables pr, @PathVariable("page")int page,@PathVariable("size")int size) {
 		List<VolumeParResponseParRoute> m = passageInfo.volumeParVoie(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
-				pr.finTime, pr.typePoid, pr.vNums);
+				pr.finTime, pr.typePoid, pr.vNums,page,size).getContent();
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
@@ -94,10 +96,10 @@ public class VolumeParAPIs {
 
 	}
 
-	@PostMapping("/volumeParSens")
-	public ResponseEntity<Object> volumeParSens(@Valid @RequestBody ParSensVariables pr) {
+	@PostMapping("/volumeParSens/page={page}/size={size}")
+	public ResponseEntity<Object> volumeParSens(@Valid @RequestBody ParSensVariables pr, @PathVariable("page")int page,@PathVariable("size")int size) {
 		List<VolumeParResponseParRoute> m = passageInfo.volumeParSens(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime,
-				pr.finTime, pr.typePoid, pr.sense);
+				pr.finTime, pr.typePoid, pr.sense,page,size).getContent();
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
@@ -305,9 +307,9 @@ public class VolumeParAPIs {
 		}
 	}
 	
-	@PostMapping("/tempsReel")
-	public ResponseEntity<Object> tempsReel(@Valid @RequestBody RepeatingVariables pr) {
-		List<VolumeParResponseObject> m = passageInfo.tempReel(pr.resId, pr.equipId, pr.modeUtil, pr.voie);
+	@PostMapping("/tempsReel/page={page}/size={size}")
+	public ResponseEntity<Object> tempsReel(@Valid @RequestBody RepeatingVariables pr, @PathVariable("page")int page,@PathVariable("size")int size) {
+		List<VolumeParResponseObject> m = passageInfo.tempReel(pr.resId, pr.equipId, pr.modeUtil, pr.voie,page,size).getContent();
 		if (m.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant durant cette période"),
 					HttpStatus.NOT_FOUND);
