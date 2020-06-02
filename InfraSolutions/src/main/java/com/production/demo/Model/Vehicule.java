@@ -45,8 +45,8 @@ public class Vehicule {
 	private Set<Passage> passages = new HashSet<>();
 
 	// OneToMany(Axe)
-	@OneToMany(mappedBy = "vehicule", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-	private Set<Axes> axes = new HashSet<>();
+	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private List<Axes> axes = new ArrayList<>();
 
 	public List<DisE> getDistEssieux() {
 		return distEssieux;
@@ -64,11 +64,11 @@ public class Vehicule {
 		this.passages = passages;
 	}
 
-	public Set<Axes> getAxes() {
+	public List<Axes> getAxes() {
 		return axes;
 	}
 
-	public void setAxes(Set<Axes> axes) {
+	public void setAxes(List<Axes> axes) {
 		this.axes = axes;
 	}
 

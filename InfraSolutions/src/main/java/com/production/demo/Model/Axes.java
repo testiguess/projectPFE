@@ -2,6 +2,7 @@ package com.production.demo.Model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,10 +21,11 @@ public class Axes {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	@Column(name = "axe_weight")
+	@Column(name = "axe_weight",nullable = false)
 	private int axeWt;
-
-	private boolean type;
+	
+	@Column(name = "axe_type",nullable = false)
+	private String type;
 
 	// ManyToOne(Vehicule)
 	@ManyToOne
@@ -49,11 +51,11 @@ public class Axes {
 		this.axeWt = axeWt;
 	}
 
-	public boolean isType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(boolean type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -79,8 +81,7 @@ public class Axes {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + axeWt;
-		result = prime * result + ((passage == null) ? 0 : passage.hashCode());
-		result = prime * result + (type ? 1231 : 1237);
+		result = prime * result + type.hashCode() ;
 		return result;
 	}
 
@@ -94,11 +95,6 @@ public class Axes {
 			return false;
 		Axes other = (Axes) obj;
 		if (axeWt != other.axeWt)
-			return false;
-		if (passage == null) {
-			if (other.passage != null)
-				return false;
-		} else if (!passage.equals(other.passage))
 			return false;
 		if (type != other.type)
 			return false;

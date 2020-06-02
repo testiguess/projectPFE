@@ -46,11 +46,6 @@ public class Reseau {
 	private String route;
 
 	@NotBlank
-	@Column(name = "CoordonneeGPS", nullable = false)
-	@Size(max = 100)
-	private String coorGPS;
-
-	@NotBlank
 	@Size(max = 100)
 	@Column(nullable = false)
 	private String region;
@@ -128,14 +123,6 @@ public class Reseau {
 		this.route = route;
 	}
 
-	public String getCoorGPS() {
-		return coorGPS;
-	}
-
-	public void setCoorGPS(String coorGPS) {
-		this.coorGPS = coorGPS;
-	}
-
 	public String getRegion() {
 		return region;
 	}
@@ -181,7 +168,6 @@ public class Reseau {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((coorGPS == null) ? 0 : coorGPS.hashCode());
 		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
 		result = prime * result + ((resId == null) ? 0 : resId.hashCode());
 		result = prime * result + ((route == null) ? 0 : route.hashCode());
@@ -198,11 +184,6 @@ public class Reseau {
 		if (getClass() != obj.getClass())
 			return false;
 		Reseau other = (Reseau) obj;
-		if (coorGPS == null) {
-			if (other.coorGPS != null)
-				return false;
-		} else if (!coorGPS.equals(other.coorGPS))
-			return false;
 		if (numero == null) {
 			if (other.numero != null)
 				return false;

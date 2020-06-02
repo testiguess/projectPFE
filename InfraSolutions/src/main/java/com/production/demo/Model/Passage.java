@@ -44,12 +44,15 @@ public class Passage {
 	@Column(nullable = false)
 	private int headway;
 
-	private boolean overloaded;
+	@Column(nullable = false)
+	private String overloaded;
 
 	@Column(nullable = false)
 	private int gap;
 
 	@Column(nullable = false)
+	private int timeGap;
+
 	private int gross;
 
 	@NotBlank
@@ -72,7 +75,7 @@ public class Passage {
 	private Voie voie;
 
 	// OneToMany(Axe)
-	@OneToMany(mappedBy = "passage", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private List<Axes> axes = new ArrayList<>();
 
 	public Passage() {
@@ -135,6 +138,14 @@ public class Passage {
 		this.gap = gap;
 	}
 
+	public int getTimeGap() {
+		return timeGap;
+	}
+
+	public void setTimeGap(int timeGap) {
+		this.timeGap = timeGap;
+	}
+
 	public int getGross() {
 		return gross;
 	}
@@ -151,11 +162,11 @@ public class Passage {
 		this.typePoid = typePoid;
 	}
 
-	public boolean isOverloaded() {
+	public String getOverloaded() {
 		return overloaded;
 	}
 
-	public void setOverloaded(boolean overloaded) {
+	public void setOverloaded(String overloaded) {
 		this.overloaded = overloaded;
 	}
 
@@ -248,7 +259,7 @@ public class Passage {
 		a.setPassage(null);
 	}
 
-	public Passage(LocalDate date, LocalTime time, @Size(max = 50) String classe, int headway, boolean overloaded,
+	public Passage(LocalDate date, LocalTime time, @Size(max = 50) String classe, int headway, String overloaded,
 			int gap, int gross, @NotBlank String typePoid, int speed) {
 		super();
 		this.date = date;
