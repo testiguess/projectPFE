@@ -16,6 +16,38 @@ public class RepeatingVariables {
 	public LocalDateTime finTime;
 	public String typePoid;
 	public int[] voie;
+	public int voieSingle;
+	public int alpha;
+	public double i;
+	public int n;
+	public double c;
+	public int yearD;
+
+	public RepeatingVariables(Long resId, Long equipId, String modeUtil, LocalDateTime debutTime, LocalDateTime finTime,
+			String typePoid, int voieSingle, String sens, int speed1, int speed2, int long1, int long2) {
+		super();
+		this.resId = resId;
+		this.equipId = equipId;
+		this.modeUtil = modeUtil;
+		this.debutTime = debutTime;
+		this.finTime = finTime;
+		this.typePoid = typePoid;
+		this.voieSingle = voieSingle;
+		this.sens = sens;
+		this.speed1 = speed1;
+		this.speed2 = speed2;
+		this.long1 = long1;
+		this.long2 = long2;
+	}
+
+	public int getVoieSingle() {
+		return voieSingle;
+	}
+
+	public void setVoieSingle(int voieSingle) {
+		this.voieSingle = voieSingle;
+	}
+
 	public String sens;
 	public int speed1;
 	public int speed2;
@@ -170,5 +202,33 @@ public class RepeatingVariables {
 		this.long1 = long1;
 		this.long2 = long2;
 	}
+
+	public RepeatingVariables(Long resId, Long equipId, String modeUtil, LocalDateTime debutTime, LocalDateTime finTime,
+			int alpha) {
+		super();
+		this.resId = resId;
+		this.equipId = equipId;
+		this.modeUtil = modeUtil;
+		this.debutTime = debutTime;
+		this.finTime = finTime;
+		this.alpha = alpha;
+	}
+
+	public RepeatingVariables(Long resId, Long equipId, String modeUtil, LocalDateTime debutTime, LocalDateTime finTime,
+			int alpha, double i, int n, double c, int yearD) {
+		super();
+		this.resId = resId;
+		this.equipId = equipId;
+		this.modeUtil = modeUtil;
+		this.debutTime = debutTime;
+		this.finTime = finTime;
+		this.alpha = alpha;
+		this.i = i;
+		this.n = n;
+		this.c = c;
+		this.yearD = yearD;
+	}
+	
+	
 
 }
