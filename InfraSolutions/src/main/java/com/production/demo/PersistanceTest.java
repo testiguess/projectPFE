@@ -16,5 +16,12 @@ public class PersistanceTest {
 		for(String n:q) {
 			System.out.println(n);
 		}
+		int a = 314947075;
+		int b = 317969990;
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(Double.valueOf(b)/Double.valueOf(a));
+		
+		System.out.println(Double.valueOf((a/b)));
 	}
 }

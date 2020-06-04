@@ -37,7 +37,8 @@ public class PassageInfo {
 	// VolumeParPeriode
 	public List<VolumeParResponseObject> volumeParPeriode(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
-		//Pageable p = PageRequest.of(page, size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		// Pageable p = PageRequest.of(page, size,
+		// Sort.by("date").descending().and(Sort.by("time").descending()));
 		List<VolumeParResponseObject> m = passageRepo.findVolumeParPeriode(rId, eId, mode, debutTime, finTime, typeP);
 		return m;
 	}
@@ -45,7 +46,8 @@ public class PassageInfo {
 	// VolumeParClasse
 	public List<VolumeParResponseObject> volumeParClasse(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String[] classes, int[] voies) {
-		//Pageable p = PageRequest.of(page, size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		// Pageable p = PageRequest.of(page, size,
+		// Sort.by("date").descending().and(Sort.by("time").descending()));
 		List<VolumeParResponseObject> m = passageRepo.findVolumeParClasse(rId, eId, mode, debutTime, finTime, classes,
 				voies);
 		return m;
@@ -54,7 +56,8 @@ public class PassageInfo {
 	// VolumeParRoute
 	public List<VolumeParResponseParRoute> volumeParRoute(Long rId, Long[] eIds, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP) {
-		//Pageable p = PageRequest.of(page, size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		// Pageable p = PageRequest.of(page, size,
+		// Sort.by("date").descending().and(Sort.by("time").descending()));
 		List<VolumeParResponseParRoute> m = passageRepo.findVolumeParRoute(rId, eIds, mode, debutTime, finTime, typeP);
 		return m;
 	}
@@ -62,7 +65,8 @@ public class PassageInfo {
 	// VolumeParVoie
 	public List<VolumeParResponseParRoute> volumeParVoie(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP, int[] voies) {
-		//Pageable p = PageRequest.of(page, size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		// Pageable p = PageRequest.of(page, size,
+		// Sort.by("date").descending().and(Sort.by("time").descending()));
 		List<VolumeParResponseParRoute> m = passageRepo.findVolumeParVoie(rId, eId, mode, debutTime, finTime, typeP,
 				voies);
 		return m;
@@ -71,7 +75,8 @@ public class PassageInfo {
 	// VolumeParSens
 	public List<VolumeParResponseParRoute> volumeParSens(Long rId, Long eId, String mode, LocalDateTime debutTime,
 			LocalDateTime finTime, String typeP, String[] sens) {
-		//Pageable p = PageRequest.of(page, size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		// Pageable p = PageRequest.of(page, size,
+		// Sort.by("date").descending().and(Sort.by("time").descending()));
 		List<VolumeParResponseParRoute> m = passageRepo.findVolumeParSens(rId, eId, mode, debutTime, finTime, typeP,
 				sens);
 		return m;
@@ -273,7 +278,8 @@ public class PassageInfo {
 
 	// TempReel
 	public List<VolumeParResponseObject> tempReel(Long rId, Long eid, String mode, int[] num) {
-		//Pageable p = PageRequest.of(page, size, Sort.by("date").descending().and(Sort.by("time").descending()));
+		// Pageable p = PageRequest.of(page, size,
+		// Sort.by("date").descending().and(Sort.by("time").descending()));
 		return passageRepo.tempReel(rId, eid, mode, num);
 	}
 
@@ -428,36 +434,27 @@ public class PassageInfo {
 
 	// Taux D'Occupation 2
 	public List<Object> tauxOc2(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2) {
-		List<Object> res = new ArrayList<>();
-		Long d = passageRepo.tauxOccup1(rId, eid, mode, times1, times2);
-		LocalDateTime tempDateTime = LocalDateTime.from(times1);
-
-		long years = tempDateTime.until(times2, ChronoUnit.YEARS);
-		tempDateTime = tempDateTime.plusYears(years);
-
-		long months = tempDateTime.until(times2, ChronoUnit.MONTHS);
-		tempDateTime = tempDateTime.plusMonths(months);
-
-		long days = tempDateTime.until(times2, ChronoUnit.DAYS);
-		tempDateTime = tempDateTime.plusDays(days);
-
-		long hours = tempDateTime.until(times2, ChronoUnit.HOURS);
-		tempDateTime = tempDateTime.plusHours(hours);
-
-		long minutes = tempDateTime.until(times2, ChronoUnit.MINUTES);
-		tempDateTime = tempDateTime.plusMinutes(minutes);
-
-		long seconds = tempDateTime.until(times2, ChronoUnit.SECONDS);
-		Long totalSeconds;
-		totalSeconds = seconds + minutes * 60 + hours * 60 * 60 + days * 24 * 60 * 60 + months * 30 * 24 * 60 * 60
-				+ years * 365 * 24 * 60 * 60;
-		if (d != null) {
-			res.add(d);
+		List<Object> r = new ArrayList<>();
+		List<Object[]> res = passageRepo.tauxOccup2(rId, eid, mode, times1, times2);
+		int timeGap = 0;
+		Long totalSeconds = this.periodeCalcul(times1, times2);
+		if (res.size() == 1) {
+			r.add("taux d'occupation : " + 2 / totalSeconds);
 		} else {
-			d = 0L;
+			for (int i = 0; i < res.size(); i++) {
+				timeGap += (int) res.get(i)[0];
+			}
+
+			Long firstTimeGap = this.periodeCalcul(times1, (LocalDateTime) res.get(0)[1]);
+			Long lastTimeGap = this.periodeCalcul((LocalDateTime) res.get(res.size() - 1)[1], times2);
+			timeGap += firstTimeGap;
+			timeGap += lastTimeGap;
+			Double d = Double.valueOf(timeGap) / Double.valueOf(totalSeconds.intValue());
+			r.add("taux d'occupation : "  + (1.0- d));
+			r.add("total TimeGap : " + timeGap);
 		}
-		res.add("teaux d'occupation : " + (double) (1 - (d / totalSeconds)));
-		return res;
+		r.add("nombre Totale des secondes dans cette Péiorde : " + totalSeconds);
+		return r;
 	}
 
 	// NE
@@ -561,6 +558,33 @@ public class PassageInfo {
 		List<CartographieHolder> list = equipRepo.carteHolder();
 
 		return list;
+	}
+
+	// PeriodeCalculator(secondes)
+	public Long periodeCalcul(LocalDateTime times1, LocalDateTime times2) {
+		LocalDateTime tempDateTime = LocalDateTime.from(times1);
+
+		long years = tempDateTime.until(times2, ChronoUnit.YEARS);
+		tempDateTime = tempDateTime.plusYears(years);
+
+		long months = tempDateTime.until(times2, ChronoUnit.MONTHS);
+		tempDateTime = tempDateTime.plusMonths(months);
+
+		long days = tempDateTime.until(times2, ChronoUnit.DAYS);
+		tempDateTime = tempDateTime.plusDays(days);
+
+		long hours = tempDateTime.until(times2, ChronoUnit.HOURS);
+		tempDateTime = tempDateTime.plusHours(hours);
+
+		long minutes = tempDateTime.until(times2, ChronoUnit.MINUTES);
+		tempDateTime = tempDateTime.plusMinutes(minutes);
+
+		long seconds = tempDateTime.until(times2, ChronoUnit.SECONDS);
+		Long totalSeconds;
+		totalSeconds = seconds + minutes * 60 + hours * 60 * 60 + days * 24 * 60 * 60 + months * 30 * 24 * 60 * 60
+				+ years * 365 * 24 * 60 * 60;
+
+		return totalSeconds;
 	}
 
 }

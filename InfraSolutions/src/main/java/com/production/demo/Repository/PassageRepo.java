@@ -410,6 +410,19 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 	public Long tauxOccup1(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
 			@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2);
 	
+	// Taux d'Occupation Original
+		@Query("SELECT  p.timeGap, p.timestamp "
+
+				+ "FROM Passage p "
+
+				+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
+
+				+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
+				+ "AND e.mode=:mode ORDER BY p.timestamp "
+
+		)
+		public List<Object[]> tauxOccup2(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
+				@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2);
 	// Parametre de NE
 	//t
 	@Query("SELECT count(p)  "

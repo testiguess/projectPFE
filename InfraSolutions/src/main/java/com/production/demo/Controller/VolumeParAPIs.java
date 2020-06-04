@@ -392,7 +392,7 @@ public class VolumeParAPIs {
 	}
 
 	@PostMapping("/tauxOccup1")
-	public ResponseEntity<Object> tauxOcc1(@Valid @RequestBody RepeatingVariables pr) {
+	public ResponseEntity<Object> tauxOcc2(@Valid @RequestBody RepeatingVariables pr) {
 		List<Object> map = passageInfo.tauxOc2(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime, pr.finTime);
 		if (map.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant dans cette période"),
