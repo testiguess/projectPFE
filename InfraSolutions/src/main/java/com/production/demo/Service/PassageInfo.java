@@ -1,5 +1,7 @@
 package com.production.demo.Service;
 
+import java.text.DecimalFormat;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -437,21 +439,30 @@ public class PassageInfo {
 		List<Object> r = new ArrayList<>();
 		List<Object[]> res = passageRepo.tauxOccup2(rId, eid, mode, times1, times2);
 		int timeGap = 0;
-		Long totalSeconds = this.periodeCalcul(times1, times2);
+		Long totalSeconds =  Duration.between(times1, times2).toMinutes()*60;
+		DecimalFormat decimalFormat = new DecimalFormat("0.###");
+		
+		Double s  ;
+		if(res.isEmpty()) {
+			r.add("taux d'occupation : " + 0.0);
+			
+		}
 		if (res.size() == 1) {
-			r.add("taux d'occupation : " + 2 / totalSeconds);
-		} else {
-			for (int i = 0; i < res.size(); i++) {
+			s=1.0/(double)(totalSeconds);
+			r.add("taux d'occupation : " +decimalFormat.format(s));
+		} if(res.size()>1) {
+			for (int i = 0; i < res.size()-1; i++) {
 				timeGap += (int) res.get(i)[0];
+				
 			}
 
-			Long firstTimeGap = this.periodeCalcul(times1, (LocalDateTime) res.get(0)[1]);
-			Long lastTimeGap = this.periodeCalcul((LocalDateTime) res.get(res.size() - 1)[1], times2);
+			Long firstTimeGap = Duration.between(times1, (LocalDateTime) res.get(res.size() - 1)[1]).toMinutes()*60;
+			Long lastTimeGap = Duration.between((LocalDateTime) res.get(0)[1], times2).toMinutes()*60;
 			timeGap += firstTimeGap;
 			timeGap += lastTimeGap;
-			Double d = Double.valueOf(timeGap) / Double.valueOf(totalSeconds.intValue());
-			r.add("taux d'occupation : "  + (1.0- d));
-			r.add("total TimeGap : " + timeGap);
+			Double d =100*(Double.valueOf(totalSeconds.intValue())- Double.valueOf(timeGap)) / Double.valueOf(totalSeconds.intValue());
+			r.add("taux d'occupation : "  + decimalFormat.format(d));
+			
 		}
 		r.add("nombre Totale des secondes dans cette Péiorde : " + totalSeconds);
 		return r;
@@ -560,31 +571,5 @@ public class PassageInfo {
 		return list;
 	}
 
-	// PeriodeCalculator(secondes)
-	public Long periodeCalcul(LocalDateTime times1, LocalDateTime times2) {
-		LocalDateTime tempDateTime = LocalDateTime.from(times1);
-
-		long years = tempDateTime.until(times2, ChronoUnit.YEARS);
-		tempDateTime = tempDateTime.plusYears(years);
-
-		long months = tempDateTime.until(times2, ChronoUnit.MONTHS);
-		tempDateTime = tempDateTime.plusMonths(months);
-
-		long days = tempDateTime.until(times2, ChronoUnit.DAYS);
-		tempDateTime = tempDateTime.plusDays(days);
-
-		long hours = tempDateTime.until(times2, ChronoUnit.HOURS);
-		tempDateTime = tempDateTime.plusHours(hours);
-
-		long minutes = tempDateTime.until(times2, ChronoUnit.MINUTES);
-		tempDateTime = tempDateTime.plusMinutes(minutes);
-
-		long seconds = tempDateTime.until(times2, ChronoUnit.SECONDS);
-		Long totalSeconds;
-		totalSeconds = seconds + minutes * 60 + hours * 60 * 60 + days * 24 * 60 * 60 + months * 30 * 24 * 60 * 60
-				+ years * 365 * 24 * 60 * 60;
-
-		return totalSeconds;
-	}
-
+	
 }

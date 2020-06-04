@@ -418,7 +418,7 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 				+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
 
 				+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
-				+ "AND e.mode=:mode ORDER BY p.timestamp "
+				+ "AND e.mode=:mode ORDER BY p.timestamp DESC "
 
 		)
 		public List<Object[]> tauxOccup2(@Param("rId") Long rId, @Param("id") Long eid, @Param("mode") String mode,
