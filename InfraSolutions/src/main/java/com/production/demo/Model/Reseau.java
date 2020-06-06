@@ -15,8 +15,6 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.NaturalId;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -28,27 +26,10 @@ public class Reseau {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
-	@NaturalId
-	@Column(nullable = false)
-	private String resId;
-
-	@NaturalId
-	@Column(name = "reseau_num", nullable = false)
-	private Double numero;
-
-	@NaturalId
-	@Column(name = "reseau_serial_num", nullable = false)
-	private Long serNum;
-
 	@NotBlank
 	@Size(max = 100)
 	@Column(nullable = false)
 	private String route;
-
-	@NotBlank
-	@Column(name = "CoordonneeGPS", nullable = false)
-	@Size(max = 100)
-	private String coorGPS;
 
 	@NotBlank
 	@Size(max = 100)
@@ -104,36 +85,12 @@ public class Reseau {
 		this.id = id;
 	}
 
-	public Double getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Double numero) {
-		this.numero = numero;
-	}
-
-	public Long getSerNum() {
-		return serNum;
-	}
-
-	public void setSerNum(Long serNum) {
-		this.serNum = serNum;
-	}
-
 	public String getRoute() {
 		return route;
 	}
 
 	public void setRoute(String route) {
 		this.route = route;
-	}
-
-	public String getCoorGPS() {
-		return coorGPS;
-	}
-
-	public void setCoorGPS(String coorGPS) {
-		this.coorGPS = coorGPS;
 	}
 
 	public String getRegion() {
@@ -160,14 +117,6 @@ public class Reseau {
 		this.numVoie = numVoie;
 	}
 
-	public String getResId() {
-		return resId;
-	}
-
-	public void setResId(String resId) {
-		this.resId = resId;
-	}
-
 	public Set<UserReseau> getUsers() {
 		return users;
 	}
@@ -181,11 +130,11 @@ public class Reseau {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((coorGPS == null) ? 0 : coorGPS.hashCode());
-		result = prime * result + ((numero == null) ? 0 : numero.hashCode());
-		result = prime * result + ((resId == null) ? 0 : resId.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((province == null) ? 0 : province.hashCode());
+		result = prime * result + ((region == null) ? 0 : region.hashCode());
 		result = prime * result + ((route == null) ? 0 : route.hashCode());
-		result = prime * result + ((serNum == null) ? 0 : serNum.hashCode());
+		result = prime * result + ((voies == null) ? 0 : voies.hashCode());
 		return result;
 	}
 
@@ -198,30 +147,30 @@ public class Reseau {
 		if (getClass() != obj.getClass())
 			return false;
 		Reseau other = (Reseau) obj;
-		if (coorGPS == null) {
-			if (other.coorGPS != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!coorGPS.equals(other.coorGPS))
+		} else if (!id.equals(other.id))
 			return false;
-		if (numero == null) {
-			if (other.numero != null)
+		if (province == null) {
+			if (other.province != null)
 				return false;
-		} else if (!numero.equals(other.numero))
+		} else if (!province.equals(other.province))
 			return false;
-		if (resId == null) {
-			if (other.resId != null)
+		if (region == null) {
+			if (other.region != null)
 				return false;
-		} else if (!resId.equals(other.resId))
+		} else if (!region.equals(other.region))
 			return false;
 		if (route == null) {
 			if (other.route != null)
 				return false;
 		} else if (!route.equals(other.route))
 			return false;
-		if (serNum == null) {
-			if (other.serNum != null)
+		if (voies == null) {
+			if (other.voies != null)
 				return false;
-		} else if (!serNum.equals(other.serNum))
+		} else if (!voies.equals(other.voies))
 			return false;
 		return true;
 	}
@@ -247,4 +196,22 @@ public class Reseau {
 		voies.remove(v);
 		v.setReseau(null);
 	}
+	
+	// Add and Remove Reseau
+	public void addUser(User u) {
+		UserReseau userReseau = new UserReseau(u, this);
+		users.add(userReseau);
+		u.getReseaux().add(userReseau);
+	}
+
+	
+
+	public void removeUser(User u) {
+		UserReseau userReseau = new UserReseau(u, this);
+		u.getReseaux().remove(userReseau);
+		users.remove(userReseau);
+		userReseau.setUser(null);
+		userReseau.setReseau(null);
+	}
+
 }

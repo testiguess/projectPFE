@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.NaturalId;
@@ -26,6 +27,14 @@ public class Equipement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
+
+	@NaturalId
+	@Column(name = "site_number", nullable = false)
+	private Double siteNumero;
+
+	@NaturalId
+	@Column(name = "serial_num", nullable = false)
+	private Long serNum;
 
 	@Size(max = 100)
 	@Column(nullable = false)
@@ -43,6 +52,21 @@ public class Equipement {
 	@Size(max = 100)
 	@Column(nullable = false)
 	private String fournisseur;
+
+	@NotBlank
+	@Column(name = "lat", nullable = false)
+	@Size(max = 100)
+	private String lat;
+
+	@NotBlank
+	@Column(name = "lng", nullable = false)
+	@Size(max = 100)
+	private String lng;
+
+	@NotBlank
+	@Column(name = "CoordonneePK", nullable = false)
+	@Size(max = 100)
+	private String coorPK;
 
 	// ManyToOne(Reseau)
 	@ManyToOne(optional = false)
@@ -120,6 +144,46 @@ public class Equipement {
 		this.fournisseur = fournisseur;
 	}
 
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getLng() {
+		return lng;
+	}
+
+	public void setLng(String lng) {
+		this.lng = lng;
+	}
+
+	public String getCoorPK() {
+		return coorPK;
+	}
+
+	public void setCoorPK(String coorPK) {
+		this.coorPK = coorPK;
+	}
+
+	public Double getSiteNumero() {
+		return siteNumero;
+	}
+
+	public void setSiteNumero(Double siteNumero) {
+		this.siteNumero = siteNumero;
+	}
+
+	public Long getSerNum() {
+		return serNum;
+	}
+
+	public void setSerNum(Long serNum) {
+		this.serNum = serNum;
+	}
+
 	public Equipement() {
 		super();
 	}
@@ -129,10 +193,15 @@ public class Equipement {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((coorPK == null) ? 0 : coorPK.hashCode());
 		result = prime * result + ((fournisseur == null) ? 0 : fournisseur.hashCode());
+		result = prime * result + ((lat == null) ? 0 : lat.hashCode());
+		result = prime * result + ((lng == null) ? 0 : lng.hashCode());
+		result = prime * result + ((mode == null) ? 0 : mode.hashCode());
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
 		result = prime * result + ((numSerie == null) ? 0 : numSerie.hashCode());
-		result = prime * result + ((reseau == null) ? 0 : reseau.hashCode());
+		result = prime * result + ((siteNumero == null) ? 0 : siteNumero.hashCode());
+		result = prime * result + ((serNum == null) ? 0 : serNum.hashCode());
 		return result;
 	}
 
@@ -145,10 +214,30 @@ public class Equipement {
 		if (getClass() != obj.getClass())
 			return false;
 		Equipement other = (Equipement) obj;
+		if (coorPK == null) {
+			if (other.coorPK != null)
+				return false;
+		} else if (!coorPK.equals(other.coorPK))
+			return false;
 		if (fournisseur == null) {
 			if (other.fournisseur != null)
 				return false;
 		} else if (!fournisseur.equals(other.fournisseur))
+			return false;
+		if (lat == null) {
+			if (other.lat != null)
+				return false;
+		} else if (!lat.equals(other.lat))
+			return false;
+		if (lng == null) {
+			if (other.lng != null)
+				return false;
+		} else if (!lng.equals(other.lng))
+			return false;
+		if (mode == null) {
+			if (other.mode != null)
+				return false;
+		} else if (!mode.equals(other.mode))
 			return false;
 		if (model == null) {
 			if (other.model != null)
@@ -160,10 +249,15 @@ public class Equipement {
 				return false;
 		} else if (!numSerie.equals(other.numSerie))
 			return false;
-		if (reseau == null) {
-			if (other.reseau != null)
+		if (siteNumero == null) {
+			if (other.siteNumero != null)
 				return false;
-		} else if (!reseau.equals(other.reseau))
+		} else if (!siteNumero.equals(other.siteNumero))
+			return false;
+		if (serNum == null) {
+			if (other.serNum != null)
+				return false;
+		} else if (!serNum.equals(other.serNum))
 			return false;
 		return true;
 	}
@@ -188,15 +282,6 @@ public class Equipement {
 	public void removeEtat(Etat e) {
 		etats.remove(e);
 		e.setEquip(null);
-	}
-
-	public Equipement(@Size(max = 100) String model, @Size(max = 100) String numSerie, String mode,
-			@Size(max = 100) String fournisseur) {
-		super();
-		this.model = model;
-		this.numSerie = numSerie;
-		this.mode = mode;
-		this.fournisseur = fournisseur;
 	}
 
 }

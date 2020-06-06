@@ -32,11 +32,9 @@ public class User {
 	private Long id;
 
 	@Size(max = 30)
-	@NotBlank
 	@Column(nullable = false)
 	private String prenom;
 
-	@NotBlank
 	@Size(max = 30)
 	@Column(nullable = false)
 	private String nom;
@@ -47,18 +45,14 @@ public class User {
 	@Column(nullable = false,unique = true)
 	private String email;
 
-	@NotBlank
 	@Size(max = 100)
 	@Column(nullable = false)
 	private String direction;
 
-	@NotBlank
 	@Size(max = 100)
 	@Column(nullable = false)
 	private String service;
 
-	@NotBlank
-	@Size(min = 10)
 	@Column(nullable = false)
 	private Long telephone;
 
@@ -75,14 +69,15 @@ public class User {
 	private List<UserReseau> reseaux = new ArrayList<>();
 
 	// ManyToOne(Role)
-	@ManyToOne(optional = false)
-	private Role role;
+	//@ManyToOne(optional = false)
+	
+	private String role;
 
-	public Role getRole() {
+	public String getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(String role) {
 		this.role = role;
 	}
 
@@ -205,18 +200,6 @@ public class User {
 		userReseau.setReseau(null);
 	}
 
-	public User(@Size(max = 30) @NotBlank String prenom, @NotBlank @Size(max = 30) String nom,
-			@Email @Size(max = 200) String email, @NotBlank @Size(max = 100) String direction,
-			@NotBlank @Size(max = 100) String service, @NotBlank @Size(min = 10) Long telephone,
-			@Size(min = 8, max = 30) String password) {
-		super();
-		this.prenom = prenom;
-		this.nom = nom;
-		this.email = email;
-		this.direction = direction;
-		this.service = service;
-		this.telephone = telephone;
-		this.password = password;
-	}
+	
 	
 }
