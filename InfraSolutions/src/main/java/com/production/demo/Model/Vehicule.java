@@ -35,6 +35,8 @@ public class Vehicule {
 
 	@Column(nullable = true)
 	private int numEssieu;
+	
+	private Long serialNumber;
 
 	// OneToMany(D_essieu)
 	@OneToMany(mappedBy = "vehicule", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

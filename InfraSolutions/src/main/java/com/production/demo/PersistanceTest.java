@@ -45,17 +45,6 @@ public class PersistanceTest {
 				return r;
 			}
 	public static void main(String[] agrs) {
-		LocalDateTime time1=LocalDateTime.parse("2020-01-20T00:09:22");
-		LocalDateTime time2=LocalDateTime.parse("2020-02-01T00:10:22");
-		LocalDateTime time3=LocalDateTime.parse("2020-01-20T02:12:11");
-		LocalDateTime time4=LocalDateTime.parse("2020-01-20T02:13:11");
-		int dif3 = (int)Duration.between(time1, time2).toMinutes()*60;
-		System.out.println(Duration.between(time1, time2).toMinutes()*60);
-		System.out.println(Duration.between(time1, time3).toMinutes()*60);
-		int dif1 = (int) (Duration.between(time1, time3).toMinutes()*60);
-		int dif2 = (int) (Duration.between(time4, time2).toMinutes()*60);
-		System.out.println(" " + dif1 + " " + dif2 + "  " + (dif1+ dif2) + "  " + (dif3 - (dif1+dif2)));
-		System.out.println(Duration.between(time4, time2).toMinutes()*60);
-		System.out.println(Duration.between(time1, time3).toMinutes()*60+Duration.between(time4, time2).toMinutes()*60);
-	}
+		
+}
 }

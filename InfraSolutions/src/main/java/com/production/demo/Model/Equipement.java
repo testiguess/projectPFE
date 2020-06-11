@@ -33,8 +33,8 @@ public class Equipement {
 	private Double siteNumero;
 
 	@NaturalId
-	@Column(name = "serial_num", nullable = false)
-	private Long serNum;
+	@Column(name = "site_id", nullable = false)
+	private String siteId;
 
 	@Size(max = 100)
 	@Column(nullable = false)
@@ -176,12 +176,12 @@ public class Equipement {
 		this.siteNumero = siteNumero;
 	}
 
-	public Long getSerNum() {
-		return serNum;
+	public String getSiteId() {
+		return siteId;
 	}
 
-	public void setSerNum(Long serNum) {
-		this.serNum = serNum;
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
 	}
 
 	public Equipement() {
@@ -200,8 +200,8 @@ public class Equipement {
 		result = prime * result + ((mode == null) ? 0 : mode.hashCode());
 		result = prime * result + ((model == null) ? 0 : model.hashCode());
 		result = prime * result + ((numSerie == null) ? 0 : numSerie.hashCode());
+		result = prime * result + ((siteId == null) ? 0 : siteId.hashCode());
 		result = prime * result + ((siteNumero == null) ? 0 : siteNumero.hashCode());
-		result = prime * result + ((serNum == null) ? 0 : serNum.hashCode());
 		return result;
 	}
 
@@ -249,15 +249,15 @@ public class Equipement {
 				return false;
 		} else if (!numSerie.equals(other.numSerie))
 			return false;
+		if (siteId == null) {
+			if (other.siteId != null)
+				return false;
+		} else if (!siteId.equals(other.siteId))
+			return false;
 		if (siteNumero == null) {
 			if (other.siteNumero != null)
 				return false;
 		} else if (!siteNumero.equals(other.siteNumero))
-			return false;
-		if (serNum == null) {
-			if (other.serNum != null)
-				return false;
-		} else if (!serNum.equals(other.serNum))
 			return false;
 		return true;
 	}

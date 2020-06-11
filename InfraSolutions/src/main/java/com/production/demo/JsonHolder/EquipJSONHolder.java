@@ -10,7 +10,7 @@ public class EquipJSONHolder {
 	private String lng;
 	private String coordonnPK;
 	private Double siteNumero;
-	private Long serNum;
+	private String siteId;
 	private Long resId;
 
 	public String getNumSerie() {
@@ -69,12 +69,14 @@ public class EquipJSONHolder {
 		this.siteNumero = siteNumero;
 	}
 
-	public Long getSerNum() {
-		return serNum;
+	
+
+	public String getSiteId() {
+		return siteId;
 	}
 
-	public void setSerNum(Long serNum) {
-		this.serNum = serNum;
+	public void setSiteId(String siteId) {
+		this.siteId = siteId;
 	}
 
 	public Long getResId() {
@@ -94,7 +96,7 @@ public class EquipJSONHolder {
 	}
 
 	public EquipJSONHolder(String mode, String numSerie, String fournisseur, String model, String lat, String lng,
-			String coordonnPK, Double siteNumero, Long serNum, Long resId) {
+			String coordonnPK, Double siteNumero, String serNum, Long resId) {
 		super();
 		this.mode = mode;
 		this.numSerie = numSerie;
@@ -104,7 +106,7 @@ public class EquipJSONHolder {
 		this.lng = lng;
 		this.coordonnPK = coordonnPK;
 		this.siteNumero = siteNumero;
-		this.serNum = serNum;
+		this.siteId = serNum;
 		this.resId = resId;
 	}
 

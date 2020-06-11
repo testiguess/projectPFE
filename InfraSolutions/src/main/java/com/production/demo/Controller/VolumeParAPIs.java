@@ -473,7 +473,7 @@ public class VolumeParAPIs {
 			equipement.setMode(equ.getMode());
 			equipement.setModel(equ.getModel());
 			equipement.setNumSerie(equ.getNumSerie());
-			equipement.setSerNum(equ.getSerNum());
+			equipement.setSiteId(equ.getSiteId());
 			equipement.setSiteNumero(equ.getSiteNumero());
 			for(com.production.demo.Model.Equipement e : reseauId.get().getEquips()) {
 				if(e.equals(equipement)) {
@@ -563,4 +563,14 @@ public class VolumeParAPIs {
 		}
 		return new ResponseEntity<>(ids, HttpStatus.OK);
 	}
+	@PostMapping("/finAx")
+	public ResponseEntity<Object> getAxes(@RequestBody RepeatingVariables r){
+		return new ResponseEntity<>(passageRepo.findAxes(r.resId, r.equipId, r.debutTime, r.finTime),HttpStatus.OK);
+	}
+	
+	@PostMapping("/to")
+	public ResponseEntity<Object> getO(@RequestBody RepeatingVariables r){
+		return new ResponseEntity<>(passageRepo.tauxOccup2(r.resId, r.equipId, r.modeUtil, r.debutTime, r.finTime),HttpStatus.OK);
+	}
+	
 }

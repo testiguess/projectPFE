@@ -1,19 +1,19 @@
 INSERT INTO reseau (id, number_voie, province, region,route )VALUES (3, 6,  'province1', 'region1', 'route1');
 
 
-INSERT INTO equipement (id,site_number, serial_num, fournisseur, mode, model, lat, lng, CoordonneePK, num_serie, reseau_id)VALUES (4, 23, 54, 'fournisseur1',  'CB', 'model1','33.971588', '-6.849813','PK10+10', 'serie1',3);
-INSERT INTO equipement (id,site_number, serial_num, fournisseur, mode, model, lat, lng, CoordonneePK, num_serie, reseau_id)VALUES (5, 21, 1842,'fournisseur2', 'CB', 'model2','33.573109', '-7.589843','PK15+50', 'serie2',3);
+INSERT INTO equipement (id,site_number, site_id, fournisseur, mode, model, lat, lng, CoordonneePK, num_serie, reseau_id)VALUES (4, 1255, 1255, 'fournisseur1',  'CB', 'model1','33.971588', '-6.849813','PK10+10', 'serie1',3);
+INSERT INTO equipement (id,site_number, site_id, fournisseur, mode, model, lat, lng, CoordonneePK, num_serie, reseau_id)VALUES (5, 1255, 1255,'fournisseur2', 'CB', 'model2','33.573109', '-7.589843','PK15+50', 'serie2',3);
 
 
-INSERT INTO voie (id, numero, sens, reseau_id)VALUES (6, 1, 'AB', 3);
-INSERT INTO voie (id, numero, sens, reseau_id)VALUES (7, 2, 'AB', 3);
-INSERT INTO voie (id, numero, sens, reseau_id)VALUES (8, 3, 'BA', 3);
-INSERT INTO voie (id, numero, sens, reseau_id)VALUES (9, 4, 'BA', 3);
+INSERT INTO voie (id, numero, sens, reseau_id)VALUES (6, 1, 'SOUTHBOUND', 3);
+INSERT INTO voie (id, numero, sens, reseau_id)VALUES (7, 2, 'SOUTHBOUND', 3);
+INSERT INTO voie (id, numero, sens, reseau_id)VALUES (8, 1, 'NORTHBOUND', 3);
+INSERT INTO voie (id, numero, sens, reseau_id)VALUES (9, 2, 'NORTHBOUND', 3);
 
 
-INSERT INTO vehicule (id, longueur, num_essieu, silouhette)VALUES(15, 240, 2, 'siloh1');
-INSERT INTO vehicule (id, longueur, num_essieu, silouhette)VALUES(10, 330, 3, 'siloh2');
-INSERT INTO vehicule (id, longueur, num_essieu, silouhette)VALUES(11, 280, 2, 'siloh3');
+INSERT INTO vehicule (id, longueur, num_essieu, silouhette)VALUES(15, 170, 2, 'siloh1');
+INSERT INTO vehicule (id, longueur, num_essieu, silouhette)VALUES(10, 341, 3, 'siloh2');
+INSERT INTO vehicule (id, longueur, num_essieu, silouhette)VALUES(11, 470, 2, 'siloh3');
 
 
 INSERT INTO distance_essieu (id, sp, vehicule_id)VALUES (12, 140, 15);

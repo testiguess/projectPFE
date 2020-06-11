@@ -62,6 +62,8 @@ public class Passage {
 	@Column(name = "speed_Kmh", nullable = false)
 	private int speed;
 
+	private Long serialNumber;
+
 	// ManyToOne (Equipement)
 	@ManyToOne(optional = false)
 	private Equipement equip;
@@ -164,6 +166,14 @@ public class Passage {
 
 	public String getOverloaded() {
 		return overloaded;
+	}
+
+	public Long getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(Long serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 
 	public void setOverloaded(String overloaded) {

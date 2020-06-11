@@ -439,7 +439,7 @@ public class PassageInfo {
 		List<Object> r = new ArrayList<>();
 		List<Object[]> res = passageRepo.tauxOccup2(rId, eid, mode, times1, times2);
 		int timeGap = 0;
-		Long totalSeconds =  Duration.between(times1, times2).toMinutes()*60;
+		Long totalSeconds =  Duration.between(times1, times2).toMillis();
 		DecimalFormat decimalFormat = new DecimalFormat("0.###");
 		
 		Double s  ;
@@ -456,10 +456,10 @@ public class PassageInfo {
 				
 			}
 
-			Long firstTimeGap = Duration.between(times1, (LocalDateTime) res.get(res.size() - 1)[1]).toMinutes()*60;
-			Long lastTimeGap = Duration.between((LocalDateTime) res.get(0)[1], times2).toMinutes()*60;
-			timeGap += firstTimeGap;
-			timeGap += lastTimeGap;
+			Long firstTimeGap = Duration.between(times1, (LocalDateTime) res.get(res.size() - 1)[1]).toMillis();
+			Long lastTimeGap = Duration.between((LocalDateTime) res.get(0)[1], times2).toMillis();
+			timeGap += firstTimeGap*1000;
+			timeGap += lastTimeGap*1000;
 			Double d =100*(Double.valueOf(totalSeconds.intValue())- Double.valueOf(timeGap)) / Double.valueOf(totalSeconds.intValue());
 			r.add("taux d'occupation : "  + decimalFormat.format(d));
 			
