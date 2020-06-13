@@ -45,6 +45,8 @@ public class PersistanceTest {
 				return r;
 			}
 	public static void main(String[] agrs) {
-		
+		LocalDateTime d1 = LocalDateTime.parse("2001-01-20T12:22:15");
+		LocalDateTime d2 = LocalDateTime.parse("2001-01-19T12:25:15");
+		System.out.println(Duration.between(d1, d2).toMillis());
 }
 }

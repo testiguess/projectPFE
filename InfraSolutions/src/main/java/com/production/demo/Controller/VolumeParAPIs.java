@@ -402,9 +402,19 @@ public class VolumeParAPIs {
 		}
 	}
 
+//	@PostMapping("/tauxOccup1")
+//	public ResponseEntity<Object> tauxOcc2(@Valid @RequestBody RepeatingVariables pr) {
+//		List<Object> map = passageInfo.tauxOc2(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime, pr.finTime);
+//		if (map.isEmpty()) {
+//			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant dans cette période"),
+//					HttpStatus.NOT_FOUND);
+//		} else {
+//			return new ResponseEntity<>(map, HttpStatus.OK);
+//		}
+//	}
 	@PostMapping("/tauxOccup1")
-	public ResponseEntity<Object> tauxOcc2(@Valid @RequestBody RepeatingVariables pr) {
-		List<Object> map = passageInfo.tauxOc2(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime, pr.finTime);
+	public ResponseEntity<Object> tauxOcc3(@Valid @RequestBody RepeatingVariables pr) {
+		List<String> map = passageInfo.tauxOc3(pr.resId, pr.equipId, pr.modeUtil, pr.debutTime, pr.finTime);
 		if (map.isEmpty()) {
 			return new ResponseEntity<>(new ResourceNotFoundException("pas vehicule passant dans cette période"),
 					HttpStatus.NOT_FOUND);
@@ -483,8 +493,8 @@ public class VolumeParAPIs {
 			if(!(b)) {
 			reseau.addEquip(equipement);
 			equipRepo.save(equipement);
-			
-			return new ResponseEntity<>("Equipement a été ajouté avec succès!", HttpStatus.OK);}else {
+			String[] msg = {"Equipement a été ajouté avec succès!"};
+			return new ResponseEntity<>(msg, HttpStatus.OK);}else {
 				return new ResponseEntity<>("cet équipement existe déjà dans ce réseau avec l'ID: " +equ.getResId() , HttpStatus.NOT_FOUND);
 			}
 		} else {
@@ -536,7 +546,8 @@ public class VolumeParAPIs {
 		Reseau res = resRepo.findAll().get(0);
 		utili.addReseau(res);
 		userRepo.save(utili);
-			return new ResponseEntity<>("utilisater avec l'Email : " + utili.getEmail() + " a été ajouté!",HttpStatus.OK);
+		String[] msg = {"utilisater avec l'Email : " + utili.getEmail() + " a été ajouté!"};
+			return new ResponseEntity<>(msg,HttpStatus.OK);
 		
 		}
 	}

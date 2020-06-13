@@ -434,39 +434,62 @@ public class PassageInfo {
 		return result;
 	}
 
-	// Taux D'Occupation 2
-	public List<Object> tauxOc2(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2) {
-		List<Object> r = new ArrayList<>();
-		List<Object[]> res = passageRepo.tauxOccup2(rId, eid, mode, times1, times2);
-		int timeGap = 0;
-		Long totalSeconds =  Duration.between(times1, times2).toMillis();
-		DecimalFormat decimalFormat = new DecimalFormat("0.###");
-		
-		Double s  ;
-		if(res.isEmpty()) {
-			r.add("taux d'occupation : " + 0.0);
-			
-		}
-		if (res.size() == 1) {
-			s=1.0/(double)(totalSeconds);
-			r.add("taux d'occupation : " +decimalFormat.format(s));
-		} if(res.size()>1) {
+//	// Taux D'Occupation 2
+//	public List<Object> tauxOc2(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2) {
+//		List<Object> r = new ArrayList<>();
+//		List<Object[]> res = passageRepo.tauxOccup2(rId, eid, mode, times1, times2);
+//		int timeGap = 0;
+//		Long totalSeconds =  Duration.between(times1, times2).toMillis();
+//		DecimalFormat decimalFormat = new DecimalFormat("0.###");
+//		
+//		Double s  ;
+//		if(res.isEmpty()) {
+//			r.add("taux d'occupation : " + 0.0);
+//			
+//		}
+//		if (res.size() == 1) {
+//			s=1.0/(double)(totalSeconds);
+//			r.add("taux d'occupation : " +decimalFormat.format(s));
+//		} if(res.size()>1) {
+//			for (int i = 0; i < res.size()-1; i++) {
+//				timeGap += (int) res.get(i)[0];
+//				
+//			}
+//
+//			Long firstTimeGap = Duration.between(times1, (LocalDateTime) res.get(res.size() - 1)[1]).toMillis();
+//			Long lastTimeGap = Duration.between((LocalDateTime) res.get(0)[1], times2).toMillis();
+//			timeGap += firstTimeGap*1000;
+//			timeGap += lastTimeGap*1000;
+//			Double d =100*(Double.valueOf(totalSeconds.intValue())- Double.valueOf(timeGap)) / Double.valueOf(totalSeconds.intValue());
+//			r.add("taux d'occupation : "  + decimalFormat.format(d));
+//			
+//		}
+//		r.add("nombre Totale des secondes dans cette Péiorde : " + totalSeconds);
+//		return r;
+//	}
+	// Taux D'Occupation 3
+		public List<String> tauxOc3(Long rId, Long eid, String mode, LocalDateTime times1, LocalDateTime times2) {
+			List<Object[]> res = passageRepo.tauxOccup2(rId, eid, mode, times1, times2);
+			List<String> result = new ArrayList<>();
+			Long totalSeconds =  Duration.between(times1, times2).toMillis();
+			Double timeGap=0.0;
+			DecimalFormat decimalFormat = new DecimalFormat("0.###");
 			for (int i = 0; i < res.size()-1; i++) {
-				timeGap += (int) res.get(i)[0];
-				
+				if((int)res.get(i)[0]<600000) {
+					timeGap+=Math.abs(Duration.between((LocalDateTime)res.get(i+1)[1],(LocalDateTime)res.get(i)[1]).toMillis()-(int) res.get(i)[0]);
+				}else {
+					if((int)res.get(i)[2]!=0) {
+						timeGap+=(36*Double.valueOf((int)res.get(i)[3])/Double.valueOf((int)res.get(i)[2]));
+					}else {
+						timeGap+=100;
+					}
+				}
 			}
-
-			Long firstTimeGap = Duration.between(times1, (LocalDateTime) res.get(res.size() - 1)[1]).toMillis();
-			Long lastTimeGap = Duration.between((LocalDateTime) res.get(0)[1], times2).toMillis();
-			timeGap += firstTimeGap*1000;
-			timeGap += lastTimeGap*1000;
-			Double d =100*(Double.valueOf(totalSeconds.intValue())- Double.valueOf(timeGap)) / Double.valueOf(totalSeconds.intValue());
-			r.add("taux d'occupation : "  + decimalFormat.format(d));
-			
+			result.add("temps d'occupation (en millisecondes): "+timeGap);
+			result.add("période totale (en millisecondes): "+totalSeconds);
+			result.add("taux d'occupation (en %):"+ decimalFormat.format(100*timeGap/totalSeconds));
+			return result;
 		}
-		r.add("nombre Totale des secondes dans cette Péiorde : " + totalSeconds);
-		return r;
-	}
 
 	// NE
 	public double calculNe(Long rId, Long eid, LocalDateTime times1, LocalDateTime times2, Double i, int n, Double c,

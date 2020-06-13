@@ -411,13 +411,13 @@ public interface PassageRepo extends JpaRepository<Passage, Long> {
 			@Param("timestamp1") LocalDateTime times1, @Param("timestamp2") LocalDateTime times2);
 	
 	// Taux d'Occupation Original
-		@Query("SELECT  p.timeGap, p.timestamp "
+		@Query("SELECT  p.timeGap, p.timestamp,p.speed, ve.longueur, ve.numEssieu "
 
 				+ "FROM Passage p "
 
 				+ "JOIN p.vehicule ve " + "JOIN p.voie v " + "JOIN p.equip e " + "JOIN e.reseau r "
 
-				+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND p.timestamp between :timestamp1 AND :timestamp2 "
+				+ "WHERE r.id=:rId " + "AND e.id=:id " + "AND p.timestamp between :timestamp1 AND :timestamp2  "
 				+ "AND e.mode=:mode ORDER BY p.timestamp DESC "
 
 		)
